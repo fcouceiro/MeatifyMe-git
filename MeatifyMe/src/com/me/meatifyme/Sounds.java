@@ -8,9 +8,6 @@ import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.audio.Music;
 
 public class Sounds {
-
-	static Audio sm = Gdx.audio;
-	static List<Music> disposable = new ArrayList<Music>();
 	
 	// styled sounds
 	static Music maintheme;
@@ -27,16 +24,7 @@ public class Sounds {
 	
 	static Music getSound(String key)
 	{
-		Music temp = sm.newMusic(Gdx.files.internal(key));
-		disposable.add(temp);
+		Music temp = MeatifyMe.asm.get(key, Music.class);
 		return temp;
-	}
-	
-	static void dispose()
-	{
-		for(Music s:disposable)
-		{
-			s.dispose();
-		}
 	}
 }

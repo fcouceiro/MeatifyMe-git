@@ -33,8 +33,8 @@ public class Editor extends UI{
 		
 		this.pop_menu();
 
-//		buttons.add(new Button(null,"Border", new Vector2(11.3f*Level.ratio.x,2*Level.ratio.y),new Vector2(3f*Level.ratio.x,Level.ratio.y),new Vector2(10,18),borderInput));
-//		buttons.add(new Button(null,"Save", new Vector2(14.5f*Level.ratio.x,2*Level.ratio.y),new Vector2(2.5f*Level.ratio.x,Level.ratio.y),new Vector2(10,18),null));
+//		buttons.add(new Button(null,"Border", new Vector2(11.3f*Level.MeatifyMe.bWidth,2*Level.MeatifyMe.bHeight),new Vector2(3f*Level.MeatifyMe.bWidth,Level.MeatifyMe.bHeight),new Vector2(10,18),borderInput));
+//		buttons.add(new Button(null,"Save", new Vector2(14.5f*Level.MeatifyMe.bWidth,2*Level.MeatifyMe.bHeight),new Vector2(2.5f*Level.MeatifyMe.bWidth,Level.MeatifyMe.bHeight),new Vector2(10,18),null));
 //		
 	}
 	
@@ -46,13 +46,13 @@ public class Editor extends UI{
 		Type_img.setBounds(10, 10, 32, 32);
 	
 		TextButton changeName = new TextButton("Change name",StylesManager.skin);
-		changeName.setBounds(52, 10, 6f*Level.ratio.x,Level.ratio.y);
+		changeName.setBounds(52, 10, 6f*MeatifyMe.bWidth,MeatifyMe.bHeight);
 		
 		TextButton changeStyle = new TextButton("Style",StylesManager.skin);
-		changeStyle.setBounds(62 + 6f*Level.ratio.x, 10, 4f*Level.ratio.x,Level.ratio.y);
+		changeStyle.setBounds(62 + 6f*MeatifyMe.bWidth, 10, 4f*MeatifyMe.bWidth,MeatifyMe.bHeight);
 		
 		CheckBox checkBorder = new CheckBox("Border",StylesManager.skin);
-		checkBorder.setPosition(72 + 6f*Level.ratio.x, 10);
+		checkBorder.setPosition(72 + 6f*MeatifyMe.bWidth, 10);
 		
 		menu.addActor(Type_img);
 		menu.addActor(changeName);
@@ -84,22 +84,22 @@ public class Editor extends UI{
 	private void input()
 	{
 		if(Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyPressed(Keys.ESCAPE)){
-			maingame.setScreen(maingame.mainmenu);
+			maingame.gotoMainMenu();
 		}
 		
 		if(Gdx.input.justTouched())
 		{
 			menu.setVisible(true);
 			menu.addAction(Actions.fadeIn(0.5f));
-			int a = (int) (mpos.x / Level.ratio.x);
-			int b = (int) (mpos.y / Level.ratio.y);
+			int a = (int) (mpos.x / MeatifyMe.bWidth);
+			int b = (int) (mpos.y / MeatifyMe.bHeight);
 			
 			if (!menu.isVisible()) {
 				//add/remove block from level
 				if (curLevel.getBlockType(a, b) != curType)
 					curLevel.addBlock(a, b, curType);
-				else if (curLevel.getBlockType(a, b) == curType)
-					curLevel.removeBlock(a, b);
+				else if (curLevel.getBlockType(a, b) == curType);
+					//curLevel.removeBlock(a, b);
 			}
 		}
 	}

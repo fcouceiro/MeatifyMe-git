@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Meatify</string>
+    <string name="Hello"></string>
+    <string name="strBtnNiveis">Niveis</string>
+    <string name="strBtnCampanha">Campanha</string>
+    <string name="lblMainMenuDescription">Meatify is all about you, and meat!… and you. and Zacarias!</string>
+    <string name="checkboxTextSound">Sound</string>
+     <string-array name="levels_entries">
+                <item>Teste2</item>
+                <item>Crazy roller</item>
+                <item>Micro</item>
+     </string-array>
+                <string name="strNiveisCampanha">Niveis de campanha</string>
+                <string name="strNiveisCom">Niveis da comunidade</string>
+                <string name="preto">#FF0000</string>
+                <string name="strPlay">Play</string>
+                <string name="strBtnStart">Tap here to wake Zacarias!</string>
 </resources>

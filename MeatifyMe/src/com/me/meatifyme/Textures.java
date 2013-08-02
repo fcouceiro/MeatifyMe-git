@@ -9,37 +9,41 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.ruthlessgames.api.StylesManager;
 
 public class Textures {
 
-	static List<Texture> disposable = new ArrayList<Texture>();
 	static Sprite blocos;
 	static Sprite rLogo;
 	static Sprite mLogo;
 	
 	static Sprite main_bg;
-	static Sprite camp;
 	
 	static Sprite bg1;
 	static Sprite bg2;
 	static Sprite bg3;
 	static Sprite bg4;
-	static Sprite buttons_region;
 	
-	//--------styles-----------//
-	static TextButtonStyle btnSlick;
-	static TextButtonStyle btnMeatify;
+	//player stage 4
+	static Sprite pl4_main;
+	static Sprite pl4_andar;
+	static Sprite pl4_subir1_1;
+	static Sprite pl4_subir1_2;
+	static Sprite pl4_subir2_1;
+	static Sprite pl4_subir2_2;
+	static Sprite pl4_subir2_3;
+	static Sprite pl4_subir2_4;
+	static Sprite pl4_descer1_1;
+	static Sprite pl4_descer1_2;
+	static Sprite pl4_saltar1;
+	static Sprite pl4_saltar2;
+	static Sprite pl4_saltar3;
 	
-	Textures()
-	{
-		this.load();
-		this.loadStyles();
-	}
-	
-	public void load()
+	static void load()
 	{
 		blocos = loadSprite("levels/blocos");
 		rLogo = loadSprite("rlogo");
@@ -48,7 +52,6 @@ public class Textures {
 		mLogo.setSize(MeatifyMe.w, MeatifyMe.h);
 		main_bg = loadSprite("mainmenu/bg");
 		main_bg.setSize(MeatifyMe.w, MeatifyMe.h);
-		camp = loadSprite("mainmenu/camp_b");
 		
 		bg1 = loadSprite("levels/bgs/1");
 		bg1.setSize(MeatifyMe.w, MeatifyMe.h);
@@ -58,43 +61,29 @@ public class Textures {
 		bg3.setSize(MeatifyMe.w, MeatifyMe.h);
 		bg4 = loadSprite("levels/bgs/4");
 		bg4.setSize(MeatifyMe.w, MeatifyMe.h);
-		buttons_region = loadSprite("buttons");
 		
-		loadStyles();
+		pl4_main = loadSprite("player/stage4/main");
+		pl4_andar = loadSprite("player/stage4/anims/animacao1-1");
+		pl4_subir1_1 = loadSprite("player/stage4/anims/animacao2-1");
+		pl4_subir1_2 = loadSprite("player/stage4/anims/animacao2-2");
+		pl4_subir2_1 = loadSprite("player/stage4/anims/animacao3-1");
+		pl4_subir2_2 = loadSprite("player/stage4/anims/animacao3-2");
+		pl4_subir2_3 = loadSprite("player/stage4/anims/animacao3-3");
+		pl4_subir2_4 = loadSprite("player/stage4/anims/animacao3-4");
+		pl4_descer1_1 = loadSprite("player/stage4/anims/animacao4-1");
+		pl4_descer1_2 = loadSprite("player/stage4/anims/animacao4-2");
+		pl4_saltar1 = loadSprite("player/stage4/anims/animacao6-1");
+		pl4_saltar2 = loadSprite("player/stage4/anims/animacao6-2");
+		pl4_saltar3 = loadSprite("player/stage4/anims/animacao6-3");
 	}
 	
-	private void loadStyles()
-	{
-		TextureRegion upRegion = new TextureRegion(buttons_region,0,0,219,29);
-		TextureRegion downRegion = new TextureRegion(buttons_region,0,3*29 +1,219,29);
-		BitmapFont buttonFont = StylesManager.skin.getFont("default-font");
+	
 
-		btnSlick = new TextButtonStyle();
-		btnSlick.up = new TextureRegionDrawable(upRegion);
-		btnSlick.down = new TextureRegionDrawable(downRegion);
-		btnSlick.font = buttonFont;
-		
-		btnMeatify = new TextButtonStyle();
-		btnMeatify.up = new TextureRegionDrawable(upRegion);
-		btnMeatify.down = new TextureRegionDrawable(downRegion);
-		btnMeatify.font = buttonFont;
-	}
-	
-	private Sprite loadSprite(String name)
+	private static Sprite loadSprite(String name)
 	{
-	
-		Texture a = new Texture(Gdx.files.internal(name + ".png"));
-		a.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-		disposable.add(a);
+		Texture a = MeatifyMe.asm.get(name + ".png",Texture.class);
+		a.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		return new Sprite(a);
-	
 	}
 	
-	public void dispose()
-	{
-		for(Texture t:disposable)
-		{
-			t.dispose();
-		}
-	}
 }
