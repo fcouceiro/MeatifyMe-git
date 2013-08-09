@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/MeatifyMeBuilder"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="lib" path="/MeatifyMeBuilder/libs/gdx.jar" sourcepath="/MeatifyMeBuilder/libs/gdx-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/franciscocouceiro/Documents/GDX Tools/commons-net-3.3/commons-net-3.3.jar" sourcepath="/Users/franciscocouceiro/Documents/GDX Tools/commons-net-3.3/commons-net-3.3-sources.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

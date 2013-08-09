@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+        <item android:id="@+id/bl1" android:icon="@drawable/bl1" android:title="@string/info_bl1" android:orderInCategory="1"/>
+    	<item android:id="@+id/bl2" android:icon="@drawable/bl2" android:title="@string/info_bl2" android:orderInCategory="2"/>
+    	<item android:id="@+id/bl3" android:icon="@drawable/bl3" android:title="@string/info_bl3" android:orderInCategory="3"/>
+    	<item android:id="@+id/bl4" android:icon="@drawable/bl4" android:title="@string/info_bl4" android:orderInCategory="4"/>
+    	<item android:id="@+id/bl5" android:icon="@drawable/bl5" android:title="@string/info_bl5" android:orderInCategory="5"/>
+    	<item android:id="@+id/bl6" android:icon="@drawable/bl6" android:title="@string/info_bl6" android:orderInCategory="6"/>
+    	<item android:id="@+id/bl7" android:icon="@drawable/bl7" android:title="@string/info_bl7" android:orderInCategory="7"/>
+    	<item android:id="@+id/bl8" android:icon="@drawable/bl8" android:title="@string/info_bl8" android:orderInCategory="8"/>
+    	<item android:id="@+id/bl9" android:icon="@drawable/bl9" android:title="@string/info_bl9" android:orderInCategory="9"/>
+    	<item android:id="@+id/bl10" android:icon="@drawable/bl10" android:title="@string/info_bl10" android:orderInCategory="10"/>
+    	<item android:id="@+id/bl11" android:icon="@drawable/bl11" android:title="@string/info_bl11" android:orderInCategory="11"/>
+    	<item android:id="@+id/bl12" android:icon="@drawable/bl12" android:title="@string/info_bl12" android:orderInCategory="12"/>
+    	<item android:id="@+id/blCancel" android:title="Cancel" android:orderInCategory="13"/>
+</menu>

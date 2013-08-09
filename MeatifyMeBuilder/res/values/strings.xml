@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MeatifyMe Builder</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_section1">Build</string>
+    <string name="title_section2">Export</string>
+    <string name="title_section3">Save</string>
+
+</resources>

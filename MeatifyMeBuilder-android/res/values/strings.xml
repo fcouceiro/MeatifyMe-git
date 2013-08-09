@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MeatifyMe Builder</string>
+
+<string name="hello_world">Hello world!</string>
+
+<string name="Popup_button">Popup_Menu</string>
+
+<string name ="info_bl1">sadasd</string>
+<string name ="info_bl2"></string>
+<string name ="info_bl3"></string>
+<string name ="info_bl4"></string>
+<string name ="info_bl5"></string>
+<string name ="info_bl6"></string>
+<string name ="info_bl7"></string>
+<string name ="info_bl8"></string>
+<string name ="info_bl9"></string>
+<string name ="info_bl10"></string>
+<string name ="info_bl11"></string>
+<string name ="info_bl12"></string>
+<string name="strDesc">Click the buttons below to build the new Level!</string>
+<string name="str_btn_block_type">Block style</string>
+<string name="strBtnLevel">Level</string>
+<string name="strBtnBorder">Border</string>
+<string name="strBtnStyle">Style</string>
+<string name="strBtnType">Type</string>
+<string name="strStyle1">4-bit</string>
+<string name="strStyle2">8-bit</string>
+<string name="strStyle3">16-bit</string>
+<string name="strStyle4">32-bit</string>
+<string name="strBorder">Border</string>
+<string name="strType1">Unlimited moves</string>
+<string name="strType2">Limited moves</string>
+<string name="strType3">Limited time</string>
+<string name="strLevel">Level name</string>
+<string name="strBtnSave">Upload</string>
+</resources>

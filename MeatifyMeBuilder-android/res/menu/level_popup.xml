@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/btnStyle" android:title="@string/strBtnStyle" android:orderInCategory="1">
+        <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+        	 <item android:id="@+id/Style_item1" android:title="@string/strStyle1" android:orderInCategory="1"/>
+        	 <item android:id="@+id/Style_item2" android:title="@string/strStyle2" android:orderInCategory="2"/>
+        	 <item android:id="@+id/Style_item3" android:title="@string/strStyle3" android:orderInCategory="3"/>
+        	 <item android:id="@+id/Style_item4" android:title="@string/strStyle4" android:orderInCategory="4"/>
+        </menu>
+    </item>>
+    <item android:id="@+id/btnType" android:title="@string/strBtnType" android:orderInCategory="2">
+        <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+        	 <item android:id="@+id/Type_item1" android:title="@string/strType1" android:orderInCategory="1"/>
+        	 <item android:id="@+id/Type_item2" android:title="@string/strType2" android:orderInCategory="2"/>
+        	 <item android:id="@+id/Type_item3" android:title="@string/strType3" android:orderInCategory="3"/>
+        </menu>
+    </item>
+    <item android:id="@+id/btnName" android:title="@string/strLevel" android:orderInCategory="0"/>
+
+</menu>

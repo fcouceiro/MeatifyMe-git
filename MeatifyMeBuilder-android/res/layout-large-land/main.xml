@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <Button
+        android:id="@+id/teste_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/str_btn_block_type" />
+
+    <Button
+        android:id="@+id/btnLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="110dp"
+        android:layout_toRightOf="@+id/teste_id"
+        android:text="@string/strBtnLevel" />
+
+    <ToggleButton
+        android:id="@+id/btnBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="110dp"
+        android:layout_toLeftOf="@+id/teste_id"
+        android:text="ToggleButton"
+        android:textOff="Border"
+        android:textOn="Border" />
+     
+</RelativeLayout>
