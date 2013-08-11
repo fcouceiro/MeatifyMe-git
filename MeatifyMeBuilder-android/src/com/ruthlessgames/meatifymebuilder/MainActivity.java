@@ -16,7 +16,9 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -32,16 +34,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,17 +58,20 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL10;
 
-public class MainActivity extends AndroidApplication implements OnClickListener,TabListener,AndroidBridge,OnMenuItemClickListener,OnCheckedChangeListener{
+public class MainActivity extends AndroidApplication implements OnClickListener,TabListener,AndroidBridge,OnMenuItemClickListener,OnCheckedChangeListener,SignInListener{
 	
 	RelativeLayout main_container;
 	Button popup_but;
 	View gameview;
 	View menu_view;
 	View export_view;
+	View settings_view;
+	View signup_view;
+	
 	MeatifyMeBuilder editor;
 	IconContextMenu popup;
 	PopupMenu level_popup;
-	AlertDialog.Builder alert;
+	Dialog dialog; 
 	
 	int idTabA = 0;
 	int idTabB = 1;
@@ -73,6 +82,9 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 	int SELECTED_LEVEL_STYLE = 4;
 	int SELECTED_LEVEL_TYPE = 1;
 	
+	int previous_tab = 0;
+	String username = "";
+	boolean SignedIn = false;
 	boolean BORDER_ON = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,13 +92,14 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
         
         main_container = new RelativeLayout(this);
         act_bar = getActionBar();
-        act_bar.setDisplayShowTitleEnabled(false);
+        act_bar.setDisplayShowTitleEnabled(true);
+        act_bar.setTitle("Not signed in");
         act_bar.setDisplayUseLogoEnabled(false);
         act_bar.setDisplayShowHomeEnabled(false);                              
         act_bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         ActionBar.Tab tabA = act_bar.newTab().setText("Editor").setTabListener(this).setTag(idTabA);
         ActionBar.Tab tabB = act_bar.newTab().setText("Export").setTabListener(this).setTag(idTabB);
-        ActionBar.Tab tabC = act_bar.newTab().setText("Settings").setTabListener(this).setTag(idTabC);
+        ActionBar.Tab tabC = act_bar.newTab().setText("Sign in").setTabListener(this).setTag(idTabC);
         
        
         
@@ -135,7 +148,42 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
         border_toggle.setOnCheckedChangeListener(this);
 
         
-        alert  = new AlertDialog.Builder(this);                 
+                
+        
+        //export view
+        
+        export_view = getLayoutInflater().inflate(R.layout.export_layout, main_container,false);
+        export_view.setVisibility(View.GONE);
+        
+        ((Button)export_view.findViewById(R.id.btnUpload)).setOnClickListener(this);
+      
+
+        main_container.addView(export_view);
+        //settings view
+		settings_view = getLayoutInflater().inflate(R.layout.settings_layout, main_container,false);
+		settings_view.setVisibility(View.GONE);
+		((TextView)settings_view.findViewById(R.id.txtDontHaveAcc)).setOnClickListener(this);
+		((Button)settings_view.findViewById(R.id.btnLogIn)).setOnClickListener(this);
+		main_container.addView(settings_view);
+		
+		//singup view
+		signup_view = getLayoutInflater().inflate(R.layout.singup_layout, main_container,false);
+		signup_view.setVisibility(View.GONE);
+		
+		
+	
+		
+		setContentView(main_container);
+        
+		 act_bar.addTab(tabA);
+	     act_bar.addTab(tabB);
+	     act_bar.addTab(tabC);
+	       
+    }
+    
+    private void showAlertToReceiveName(){
+    	
+    	AlertDialog.Builder alert  = new AlertDialog.Builder(this);                 
         alert.setTitle("Level name");  
         alert.setMessage("Enter name:");                
 
@@ -158,27 +206,9 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
                     return;   
                 }
             });
-                
-        
-        //export view
-        
-        export_view = getLayoutInflater().inflate(R.layout.export_layout, main_container,false);
-        export_view.setVisibility(View.GONE);
-        
-        ((Button)export_view.findViewById(R.id.btnUpload)).setOnClickListener(this);
-      
-
-        main_container.addView(export_view);
-        //settings view
-		
-		 setContentView(main_container);
-        
-		 act_bar.addTab(tabA);
-	        act_bar.addTab(tabB);
-	        act_bar.addTab(tabC);
-	       
+            
+            alert.show();
     }
-    
 
 	@Override
 	public void onClick(View v) {
@@ -192,12 +222,62 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 			level_popup.show();
 			break;
 		case R.id.btnUpload:
-			new Connector().execute(editor.save());
+			if(this.SignedIn){
+			ProgressBar pBar = (ProgressBar)export_view.findViewById(R.id.pBarUpload);
+			new FileUpload(this.username,pBar).execute(editor.save());
+			}
+			else{
+				Toast.makeText(this, "You're not signed in!", Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case R.id.txtDontHaveAcc:
+			dialog = new Dialog(this);
+			dialog.setContentView(R.layout.singup_layout);
+			((Button)dialog.findViewById(R.id.btnSignUp)).setOnClickListener(this);
+			dialog.setTitle("Fill in your details");
+			dialog.show();
+			break;
+		case R.id.btnLogIn:
+			String[] user_data_sign = new String[2];
+			
+			user_data_sign[0] = ((EditText)settings_view.findViewById(R.id.txtUsername)).getText().toString().trim();
+			user_data_sign[1] = ((EditText)settings_view.findViewById(R.id.txtPassword)).getText().toString().trim();
+			
+			this.signIn(user_data_sign);
+			break;
+		case R.id.btnSignUp:
+			String[] user_data = new String[4];
+			
+			user_data[0] = ((EditText)dialog.findViewById(R.id.txtUsernameLog)).getText().toString().trim();
+			user_data[3] = ((EditText)dialog.findViewById(R.id.txtFirstLastName)).getText().toString().trim();
+			user_data[2] = ((EditText)dialog.findViewById(R.id.txtEmail)).getText().toString().trim();
+			user_data[1] = ((EditText)dialog.findViewById(R.id.txtPasswordLog)).getText().toString().trim();
+			
+			this.createNewUser(user_data);
 			break;
 		}
 	}
+	
+	private void createNewUser(String[] details){
+		//starts the dialog
+		ProgressDialog pDialog = new ProgressDialog(this);
+		pDialog.setIndeterminate(true);
+		pDialog.setTitle("Signing up...");
+		pDialog.setMessage("Creating account.");
+		pDialog.show();
+		
+		//add user to the database
+		String query = "INSERT INTO users (username,password,email,name) values ('"+details[0] +"','"+details[1]  +"','"+details[2]  +"','"+details[3]  +"');";
+		new Query().execute(query);
+		Log.d("QUERY", query);
+		
+		//create his folder
+		new CreateUserRemoteDir(pDialog,dialog).execute(details[0]);
+	}
 
-
+	private void signIn(String[] details){
+		new SignInTask(this).execute(details);
+	}
 	@Override
 	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
 		// TODO Auto-generated method stub
@@ -217,6 +297,8 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 					gameview.setVisibility(View.VISIBLE);
 					menu_view.setVisibility(View.VISIBLE);
 					export_view.setVisibility(View.GONE);
+					settings_view.setVisibility(View.GONE);
+					signup_view.setVisibility(View.GONE);
 				}});
 		}
 		else if(arg0.getTag()== (Object)idTabB)
@@ -227,8 +309,11 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 				public void run() {
 					// TODO Auto-generated method stub
 					
+					
 					gameview.setVisibility(View.GONE);
 					menu_view.setVisibility(View.GONE);
+					settings_view.setVisibility(View.GONE);
+					signup_view.setVisibility(View.GONE);
 					
 					String type_text = "";
 					switch(SELECTED_LEVEL_TYPE){
@@ -268,8 +353,14 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 					export_view.setVisibility(View.VISIBLE);
 				}});
 		}
-		else{
-			
+		else  if(arg0.getTag()== (Object)idTabC){
+			if(this.SignedIn){
+				this.SignedIn = false;
+				this.act_bar.setTitle("Not signed in");
+				act_bar.setSelectedNavigationItem(this.previous_tab);
+				arg0.setText("Sign in");
+			}
+			else{
 			runOnUiThread(new Runnable(){
 
 				@Override
@@ -278,14 +369,26 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 					gameview.setVisibility(View.GONE);
 					menu_view.setVisibility(View.GONE);
 					export_view.setVisibility(View.GONE);
+					settings_view.setVisibility(View.VISIBLE);
+					signup_view.setVisibility(View.GONE);
 				}});
+		
+			}
 		}
 	}
 
 	@Override
 	public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
 		// TODO Auto-generated method stub
-		
+		if(arg0.getTag()== (Object)idTabA){
+			this.previous_tab = 0;
+		}
+		else if(arg0.getTag()== (Object)idTabB){
+			this.previous_tab = 1;
+		}
+		else if(arg0.getTag()== (Object)idTabC){
+			this.previous_tab = 2;
+		}
 	}
 	
 	int blIds[] = { 0,R.drawable.bl1,R.drawable.bl3,R.drawable.bl3,R.drawable.bl4,R.drawable.bl5,R.drawable.bl6,R.drawable.bl7,R.drawable.bl8,R.drawable.bl9,R.drawable.bl10,R.drawable.bl11,R.drawable.bl12};
@@ -337,7 +440,7 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 			this.SELECTED_LEVEL_TYPE = 3;
 			break;
 		case R.id.btnName:
-			alert.show();
+			this.showAlertToReceiveName();
 			break;
 		}
 		
@@ -353,5 +456,45 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 		this.BORDER_ON = arg1;
 		this.editor.setBorder(BORDER_ON,this.SELECTED_BLOCK_TYPE);
 	}
-	
+
+	@Override
+	public void signSuccedd(String username) {
+		// TODO Auto-generated method stub
+		this.username = username;
+		this.act_bar.setTitle(username);
+		this.SignedIn = true;
+		this.act_bar.setSelectedNavigationItem(0);
+		this.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Toast.makeText(settings_view.getContext(), "Welcome! You're signed in.", Toast.LENGTH_LONG).show();
+			}});
+		
+		this.act_bar.getTabAt(2).setText("Sign out");
+	}
+
+	@Override
+	public void signFailed(final int code) {
+		// TODO Auto-generated method stub
+		this.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				String message = "";
+				switch(code){
+				case 1:
+					message = "Failed. Make sure you have internet access.";
+					break;
+					default:
+						message ="Please check your details. Have you created your account?";
+						break;
+				}
+				Toast.makeText(settings_view.getContext(),message , Toast.LENGTH_LONG).show();
+			}});
+	}
+
+
 }

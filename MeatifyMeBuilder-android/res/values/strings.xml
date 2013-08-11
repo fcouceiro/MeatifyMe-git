@@ -34,4 +34,13 @@
 <string name="strType3">Limited time</string>
 <string name="strLevel">Level name</string>
 <string name="strBtnSave">Upload</string>
+<string name="strUplaoding">Uploading...</string>
+<string name="strSummary">Confirm the level details and upload it to the community!</string>
+<string name="placeholderFirstMame">First and last name</string>
+<string name="placeholderUsername">Username</string>
+<string name="placeholderEmail">E-mail</string>
+<string name="placeholderPassword">Password</string>
+<string name="strBtnSignIn">Sign Up</string>
+<string name="strBtnLogIn">Log in</string>
+<string name="strDontHaveAcc">Not registered? Click here.</string>
 </resources>

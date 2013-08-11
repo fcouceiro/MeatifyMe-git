@@ -3,21 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <Button
+        android:id="@+id/btnUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/strBtnSave" />
+
+    <ProgressBar
+        android:id="@+id/pBarUpload"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnUpload"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/summary_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="39dp"
-        android:layout_marginTop="39dp" >
-
-        <TextView
-            android:id="@+id/labelLevelName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Level name:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
 
         <TextView
             android:id="@+id/labelLevelStyle"
@@ -26,6 +36,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/labelLevelType"
             android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
             android:text="Level style:"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -36,6 +47,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/labelLevelStyle"
             android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
             android:text="Block total:"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -46,16 +58,30 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/labelLevelName"
             android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
             android:text="Level type:"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-    </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/strBtnSave" />
+        <TextView
+            android:id="@+id/txtDontHaveAcc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/strSummary"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/labelLevelName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtDontHaveAcc"
+            android:layout_marginTop="43dp"
+            android:gravity="center_horizontal"
+            android:text="Level name:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

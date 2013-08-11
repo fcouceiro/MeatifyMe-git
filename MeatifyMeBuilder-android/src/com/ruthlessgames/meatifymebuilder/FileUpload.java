@@ -2,14 +2,35 @@ package com.ruthlessgames.meatifymebuilder;
 
 import java.io.InputStream;
 import org.apache.commons.net.ftp.FTPClient;
+
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-public class Connector extends AsyncTask<FileToUpload,Integer,Boolean>{
+public class FileUpload extends AsyncTask<FileToUpload,Integer,Boolean>{
 
+	ProgressBar pBar;
+	String username = "";
+	
+	public FileUpload(String username,ProgressBar progress_bar){
+		pBar = progress_bar;
+		this.username = username;
+	}
+	
+	@Override
+	protected void onPreExecute(){
+		pBar.setIndeterminate(true);
+		pBar.setEnabled(true);
+		pBar.setVisibility(View.VISIBLE);
+	}
+	
 	@Override
 	protected Boolean doInBackground(FileToUpload... arg0) {
 		// TODO Auto-generated method stub
+		
 		FTPClient mFtpClient = new FTPClient();
 		boolean debug_bool[] = new boolean[arg0.length];
 		try{
@@ -20,6 +41,7 @@ public class Connector extends AsyncTask<FileToUpload,Integer,Boolean>{
 				if (mFtpClient.login("u860682274", "fcouceiro94")) {
 					Log.d("LOGIN", "SUCCESSFUL");
 					
+					if(mFtpClient.changeWorkingDirectory(username));
 					for(int i=0;i<arg0.length;i++){
 						if(mFtpClient.storeFile(arg0[i].nome + ".xml", arg0[i].ficheiro)){
 							debug_bool[i] = true;
@@ -52,6 +74,8 @@ public class Connector extends AsyncTask<FileToUpload,Integer,Boolean>{
 	
 	@Override
 	protected void onPostExecute(Boolean result) {
+		pBar.setVisibility(View.GONE);
+		Toast.makeText(pBar.getContext(), result ? "Done" : "An error ocurred", Toast.LENGTH_SHORT).show();
        Log.d("COMPLETED TASK","RETURNED: " + (result ? "true" : "false"));
     }
 }
