@@ -1,10 +1,17 @@
 package com.ruthlessgames.meatifyme;
 
+import yuku.iconcontextmenu.IconContextMenu;
+import yuku.iconcontextmenu.IconContextMenu.IconContextItemSelectedListener;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -38,22 +46,25 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 	AdView adView;
 	View gameView;
 	View mainmenu_view;
-	View niveis_view;
 	View loading_view;
+	View ingame_view;
+	Button popup_but;
+	
 	RelativeLayout main_layout;
+	IconContextMenu popup;
+	IconContextMenu niveis_popup_menu;
 	
 	Animation flash_anim_btn;
-	int start_click_count = 0;
 	
+	private int SELECTED_BLOCK_TYPE= 1;
 	private final int SHOW_TOAST = 0;
 	private final int SHOW_ALERT = 1;
 	private CharSequence TOAST_TEXT;
 	private final int SHOW_MAINMENU = 2;
 	private final int HIDE_MAINMENU = 3;
-	private final int SHOW_NIVEIS = 4;
 	private final int SHOW_LOADING = 5;
 	private final int DO_THE_FLASHY_THING = 6;
-	private boolean niveis_set = false;
+	private final int SHOW_INGAME_VIEW = 7;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,10 +126,35 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 		main_layout.addView(mainmenu_view);
 		
 		//niveis
-		niveis_view = inflater.inflate(R.layout.niveis_layout, main_layout,false);
-		niveis_view.setVisibility(View.GONE);
-		((Button) niveis_view.findViewById(R.id.btnPlayNiveis)).setOnClickListener(this);
-		main_layout.addView(niveis_view);
+		
+		niveis_popup_menu = new IconContextMenu(main_layout.getContext(),R.menu.popup);
+		niveis_popup_menu.setOnIconContextItemSelectedListener(new IconContextItemSelectedListener(){
+
+			@Override
+			public void onIconContextItemSelected(MenuItem item, Object info) {
+				// TODO Auto-generated method stub
+
+				if(item.getTitle() == "Cancel"){
+					niveis_popup_menu.dismiss();
+				}
+				else if(item.getTitle() == "Browse more online"){
+					String url = "http://meatifyme-dropoff.ciki.me/Available-levels/";
+					Intent i = new Intent(Intent.ACTION_VIEW);
+					i.setData(Uri.parse(url));
+					startActivity(i);
+				}
+				else{
+					handler.sendEmptyMessage(HIDE_MAINMENU);
+					
+					for(int i=0;i<maingame.nomes_levels_custom.length;i++){
+						if(maingame.nomes_levels_custom[i].contains(item.getTitle())){
+							maingame.startCustomLevel(i);
+						}
+					}
+					handler.sendEmptyMessage(SHOW_INGAME_VIEW);
+				}
+			}});
+		
 		
 		//loading
 		loading_view = inflater.inflate(R.layout.laoding_layout, main_layout,false);
@@ -137,12 +173,38 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 		btnStart.setOnClickListener(this);
 		flash_anim_btn.reset();
 		btnStart.startAnimation(flash_anim_btn);
+		
+		//ingame ui
+		ingame_view = inflater.inflate(R.layout.ingame_layout, main_layout,false);
+		ingame_view.setVisibility(View.GONE);
+		main_layout.addView(ingame_view);
+		popup_but = (Button)ingame_view.findViewById(R.id.btnBlockType);
+		popup_but.setOnClickListener(this);
+		popup  = new IconContextMenu(main_layout.getContext(), R.menu.popup);
+	        popup.setOnIconContextItemSelectedListener(new IconContextItemSelectedListener() {
+
+				@Override
+				public void onIconContextItemSelected(MenuItem arg0, Object info) {
+					// TODO Auto-generated method stub
+					if(arg0.getOrder() == 13) return;
+					
+					SELECTED_BLOCK_TYPE = arg0.getOrder();
+					
+					 Drawable d = getResources().getDrawable(blIds[SELECTED_BLOCK_TYPE]);
+					popup_but.setCompoundDrawablesWithIntrinsicBounds(d,null,null,null);
+				}
+		       });
 	}
 	
 	protected Handler handler = new Handler(){
 		@Override
         public void handleMessage(Message msg) {
             switch(msg.what) {
+            case SHOW_INGAME_VIEW:
+            	if(ingame_view.getVisibility() == View.GONE)
+            	ingame_view.setVisibility(View.VISIBLE);
+            	else ingame_view.setVisibility(View.GONE);
+            	break;
             case SHOW_TOAST:
             	Toast.makeText(mainmenu_view.getContext(), TOAST_TEXT, Toast.LENGTH_LONG).show();
             	break;
@@ -153,21 +215,14 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
             	//gameView.setVisibility(View.GONE);
             	adView.setVisibility(View.VISIBLE);
             	mainmenu_view.setVisibility(View.VISIBLE);
-            	niveis_view.setVisibility(View.GONE);
             	loading_view.setVisibility(View.GONE);
+            	ingame_view.setVisibility(View.GONE);
             	break;
             case HIDE_MAINMENU:
             	//gameView.setVisibility(View.VISIBLE);
             	adView.setVisibility(View.GONE);
             	mainmenu_view.setVisibility(View.GONE);
-            	niveis_view.setVisibility(View.GONE);
             	loading_view.setVisibility(View.GONE);
-            	break;
-            case SHOW_NIVEIS:
-            	((Spinner)niveis_view.findViewById(R.id.spinnerCustomLevels)).setAdapter(new ArrayAdapter<String>(niveis_view.getContext(),
-                        android.R.layout.simple_spinner_item, maingame.nomes_levels_custom));
-            	mainmenu_view.setVisibility(View.GONE);
-            	niveis_view.setVisibility(View.VISIBLE);
             	break;
             case SHOW_LOADING:
             	loading_view.setVisibility(View.VISIBLE);
@@ -213,23 +268,16 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 		case R.id.btnCampanha:
 			handler.sendEmptyMessage(HIDE_MAINMENU);
 			maingame.startLevel(0);
+			handler.sendEmptyMessage(SHOW_INGAME_VIEW);
 			break;
 		case R.id.btnNiveis:
-			handler.sendEmptyMessage(SHOW_NIVEIS);
-			break;
-		case R.id.btnPlayNiveis:
-			handler.sendEmptyMessage(HIDE_MAINMENU);
-			Spinner spinner = (Spinner) niveis_view.findViewById(R.id.spinnerCustomLevels);
-			maingame.startCustomLevel(spinner.getSelectedItemPosition());
+			niveis_popup_menu.show();
 			break;
 		case R.id.btnStartGame:
-			if(this.start_click_count > 5)
-			{
-				maingame.gotoMainMenu();
-			}
-			else
-			this.start_click_count++;
-			
+			maingame.gotoMainMenu();
+			break;
+		case R.id.btnBlockType:
+			popup.show();
 			break;
 		}
 	}
@@ -248,11 +296,6 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 	
 	@Override
 	public void onBackPressed (){
-		if(niveis_view.getVisibility() == View.VISIBLE)
-		{
-			handler.sendEmptyMessage(SHOW_MAINMENU);
-		}
-		
 		Log.v("BACK", "PRESSED"); 
 	}
 
@@ -278,5 +321,25 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 	public void showLoading() {
 		// TODO Auto-generated method stub
 		handler.sendEmptyMessage(SHOW_LOADING);
+	}
+	
+	int blIds[] = { 0,R.drawable.bl1,R.drawable.bl2,R.drawable.bl3,R.drawable.bl4,R.drawable.bl5,R.drawable.bl6,R.drawable.bl7,R.drawable.bl8,R.drawable.bl9,R.drawable.bl10,R.drawable.bl11,R.drawable.bl12};
+
+	@Override
+	public int getBlockType() {
+		// TODO Auto-generated method stub
+		return this.SELECTED_BLOCK_TYPE;
+	}
+
+	@Override
+	public void setNiveisPopupMenu() {
+		// TODO Auto-generated method stub
+		Menu menu = niveis_popup_menu.getMenu();
+		menu.clear();
+		for(int i=0;i<maingame.nomes_levels_custom.length;i++){
+			menu.add(maingame.nomes_levels_custom[i].replace(".xml", ""));
+    	}
+		menu.add("Cancel");
+		menu.add("Browse more online");
 	}
 }

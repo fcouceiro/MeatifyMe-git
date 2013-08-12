@@ -16,4 +16,18 @@
                 <string name="preto">#FF0000</string>
                 <string name="strPlay">Play</string>
                 <string name="strBtnStart">Tap here to wake Zacarias!</string>
+                <string name="strBlockStyle">Block style</string>
+                
+ <string name ="info_bl1">sadasd</string>
+<string name ="info_bl2"></string>
+<string name ="info_bl3"></string>
+<string name ="info_bl4"></string>
+<string name ="info_bl5"></string>
+<string name ="info_bl6"></string>
+<string name ="info_bl7"></string>
+<string name ="info_bl8"></string>
+<string name ="info_bl9"></string>
+<string name ="info_bl10"></string>
+<string name ="info_bl11"></string>
+<string name ="info_bl12"></string>
 </resources>

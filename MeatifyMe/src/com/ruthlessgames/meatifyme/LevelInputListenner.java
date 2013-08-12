@@ -46,7 +46,7 @@ public class LevelInputListenner implements InputProcessor,GestureListener{
 			// TODO Auto-generated method stub
 			int x = (int) (screenX / MeatifyMe.bWidth);
 			int y = (int) ((MeatifyMe.h - screenY) / MeatifyMe.bHeight);
-			maingame.curLevel.addBlock(x, y, maingame.curLevel.block_type);
+			maingame.curLevel.addBlock(x, y, maingame.actionResolver.getBlockType());
 	
 		return false;
 	}
@@ -85,25 +85,7 @@ public class LevelInputListenner implements InputProcessor,GestureListener{
 	@Override
 	public boolean fling(float velocityX, float velocityY, int button) {
 		// TODO Auto-generated method stub
-			//ascendente
-			if(velocityY > 0)
-			{
-				maingame.curLevel.deincBlockType();
-				if(MeatifyMe.debug) Gdx.app.log("INPUT", "block type --");
-				Gdx.app.log("INPUT", "" + maingame.curLevel.block_type);
-				
-			}
-			else{	//descendente
-				
-				maingame.curLevel.incBlockType();
-				if(MeatifyMe.debug) Gdx.app.log("INPUT", "block type ++");
-				Gdx.app.log("INPUT", "" + maingame.curLevel.block_type);
-				
-			}
-			
-			
-
-		return true;
+		return false;
 	}
 
 	@Override

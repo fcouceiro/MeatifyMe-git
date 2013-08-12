@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="5dp"
         android:text="@string/strBtnSignIn" />
 
     <EditText
@@ -19,7 +19,8 @@
         android:layout_alignLeft="@+id/txtEmail"
         android:layout_centerVertical="true"
         android:ems="10"
-        android:hint="@string/placeholderUsername" />
+        android:hint="@string/placeholderUsername" 
+         android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/txtEmail"
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtUsernameLog"
         android:layout_alignLeft="@+id/txtFirstLastName"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="10dp"
         android:ems="10"
         android:hint="@string/placeholderEmail"
         android:inputType="textEmailAddress" />
@@ -38,13 +39,12 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtEmail"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="10dp"
         android:ems="10"
         android:hint="@string/placeholderFirstMame"
-        android:inputType="textPersonName" >
+        android:inputType="textPersonName" />
 
-        <requestFocus />
-    </EditText>
+   
 
     <EditText
         android:id="@+id/txtPasswordLog"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txtUsernameLog"
         android:layout_below="@+id/txtUsernameLog"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="@string/placeholderPassword"
         android:inputType="textPassword" />

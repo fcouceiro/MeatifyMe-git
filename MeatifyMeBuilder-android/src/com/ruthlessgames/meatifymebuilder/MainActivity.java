@@ -259,20 +259,8 @@ public class MainActivity extends AndroidApplication implements OnClickListener,
 	}
 	
 	private void createNewUser(String[] details){
-		//starts the dialog
-		ProgressDialog pDialog = new ProgressDialog(this);
-		pDialog.setIndeterminate(true);
-		pDialog.setTitle("Signing up...");
-		pDialog.setMessage("Creating account.");
-		pDialog.show();
-		
 		//add user to the database
-		String query = "INSERT INTO users (username,password,email,name) values ('"+details[0] +"','"+details[1]  +"','"+details[2]  +"','"+details[3]  +"');";
-		new Query().execute(query);
-		Log.d("QUERY", query);
-		
-		//create his folder
-		new CreateUserRemoteDir(pDialog,dialog).execute(details[0]);
+		new CreateUserInDatabaseTask(dialog).execute(details);
 	}
 
 	private void signIn(String[] details){

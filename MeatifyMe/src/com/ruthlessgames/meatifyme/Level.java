@@ -33,7 +33,6 @@ public class Level extends UI implements Cloneable{
 	//ingame stuff
 	int block_type =  1; //tijolo
 	int collisionbox_folga = 10; //(pixeis)
-	Image block_selecionado;
 	Player player;
 	Vector2 player_initialposition;
 	
@@ -61,12 +60,6 @@ public class Level extends UI implements Cloneable{
 		
 		completed = false;
 		
-		//adicionar bloco que msotra o bloco selecionado (2,2)
-		block_selecionado = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(block_type),32*(4-style),32,32)));
-		block_selecionado.setPosition(2 * MeatifyMe.bWidth, 2 * MeatifyMe.bHeight);
-		block_selecionado.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
-		stage.addActor(block_selecionado);
-		
 		//gera player
 		switch(style)
 		{
@@ -87,33 +80,6 @@ public class Level extends UI implements Cloneable{
 		
 
 		
-	}
-	
-	public void incBlockType(){
-		int b = block_type;
-		b++;
-		
-		if(b == 3) b = 5;
-		else if(b == 13) b = 12;
-		
-		block_type = b;
-		
-		
-		block_selecionado.setDrawable(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(block_type),32*(4-style),32,32)));
-		
-	
-	}
-	
-	public void deincBlockType(){
-		int b = block_type;
-		b--;
-		
-		if(b == 4) b = 2;
-		else if(b == 0) b = 1;
-		
-		block_type = b;
-		
-		block_selecionado.setDrawable(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(block_type),32*(4-style),32,32)));
 	}
 	
 	public void addBlock(final int xi,final int yi,int type)

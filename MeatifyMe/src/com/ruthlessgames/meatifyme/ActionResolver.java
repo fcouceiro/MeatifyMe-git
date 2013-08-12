@@ -7,4 +7,6 @@ public interface ActionResolver {
      public void backPressed();
      public void updateProgressLoading(float prog);
      public void showLoading();
+     public int getBlockType();
+     public void setNiveisPopupMenu();
 }
