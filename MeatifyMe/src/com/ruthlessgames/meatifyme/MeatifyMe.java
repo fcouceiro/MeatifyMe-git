@@ -185,6 +185,16 @@ public class MeatifyMe extends Game{
 		loadCustomLevels();
 	}
 	
+	public void new_custom_level(String path){
+		FileHandle dir = new FileHandle(Gdx.files.getExternalStoragePath() + path.replace("/sdcard/", ""));
+		if(dir.exists()){
+			dir.copyTo(new FileHandle(Gdx.files.getExternalStoragePath() + LEVELS_PATH));
+			dir.delete();
+			this.loadCustomLevels();
+			Gdx.app.log("FILE PICKER", "ADDING TO CUSTOM LEVELS");
+		}
+	}
+	
 	@Override
 	public void dispose() {
 		batch.dispose();

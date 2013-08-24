@@ -84,7 +84,10 @@ public class Level extends UI implements Cloneable{
 	
 	public void addBlock(final int xi,final int yi,int type)
 	{
-		if(tipos[xi][yi] != 0 || xi == 0 || yi == 0 || xi == 19 || yi == 13) return;
+		if(tipos[xi][yi] != 0 || xi == 0 || yi == 0 || xi == 19 || yi == 13){
+			this.maingame.actionResolver.showShortToast("Can't build here!");
+			return;
+		}
 		
 		final Image newblock = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(type),32*(4-style),32,32)));
 		newblock.setPosition(xi * MeatifyMe.bWidth, yi * MeatifyMe.bHeight);

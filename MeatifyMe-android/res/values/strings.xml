@@ -30,4 +30,8 @@
 <string name ="info_bl10"></string>
 <string name ="info_bl11"></string>
 <string name ="info_bl12"></string>
+
+<string name ="niveis_p1">Select</string>
+<string name ="niveis_p2">Import</string>
+<string name ="niveis_p3">Browse more online</string>
 </resources>

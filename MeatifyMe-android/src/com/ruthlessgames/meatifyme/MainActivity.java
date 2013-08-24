@@ -2,6 +2,7 @@ package com.ruthlessgames.meatifyme;
 
 import yuku.iconcontextmenu.IconContextMenu;
 import yuku.iconcontextmenu.IconContextMenu.IconContextItemSelectedListener;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -36,11 +38,13 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
+import com.lamerman.*;
 import com.me.meatifyme.R;
 import com.ruthlessgames.meatifyme.ActionResolver;
 import com.ruthlessgames.meatifyme.MeatifyMe;
 
 public class MainActivity extends AndroidApplication implements ActionResolver,OnClickListener, OnCheckedChangeListener{
+	
 	
 	MeatifyMe maingame;
 	AdView adView;
@@ -49,10 +53,11 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 	View loading_view;
 	View ingame_view;
 	Button popup_but;
+	PopupMenu niveis_popup;
 	
 	RelativeLayout main_layout;
 	IconContextMenu popup;
-	IconContextMenu niveis_popup_menu;
+	IconContextMenu niveis_icon_popup_menu;
 	
 	Animation flash_anim_btn;
 	
@@ -65,6 +70,7 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 	private final int SHOW_LOADING = 5;
 	private final int DO_THE_FLASHY_THING = 6;
 	private final int SHOW_INGAME_VIEW = 7;
+	private final int PICK_FILE = 8;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,21 +133,15 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 		
 		//niveis
 		
-		niveis_popup_menu = new IconContextMenu(main_layout.getContext(),R.menu.popup);
-		niveis_popup_menu.setOnIconContextItemSelectedListener(new IconContextItemSelectedListener(){
+		niveis_icon_popup_menu = new IconContextMenu(main_layout.getContext(),R.menu.popup);
+		niveis_icon_popup_menu.setOnIconContextItemSelectedListener(new IconContextItemSelectedListener(){
 
 			@Override
 			public void onIconContextItemSelected(MenuItem item, Object info) {
 				// TODO Auto-generated method stub
 
 				if(item.getTitle() == "Cancel"){
-					niveis_popup_menu.dismiss();
-				}
-				else if(item.getTitle() == "Browse more online"){
-					String url = "http://meatifyme-dropoff.ciki.me/Available-levels/";
-					Intent i = new Intent(Intent.ACTION_VIEW);
-					i.setData(Uri.parse(url));
-					startActivity(i);
+					niveis_icon_popup_menu.dismiss();
 				}
 				else{
 					handler.sendEmptyMessage(HIDE_MAINMENU);
@@ -155,6 +155,40 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 				}
 			}});
 		
+		niveis_popup = new PopupMenu(main_layout.getContext(),((Button)mainmenu_view.findViewById(R.id.btnNiveis)));
+		niveis_popup.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				// TODO Auto-generated method stub
+				if(arg0.getItemId() == R.id.np1){
+					niveis_icon_popup_menu.show();
+				}
+				else if(arg0.getItemId() == R.id.np2){
+					Intent intent = new Intent(getBaseContext(), FileDialog.class);
+	                intent.putExtra(FileDialog.START_PATH, "/sdcard/Download");
+	                
+	                intent.putExtra(FileDialog.SELECTION_MODE, SelectionMode.MODE_OPEN);
+	                
+	                //can user select directories or not
+	                intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
+	                
+	                //alternatively you can set file filter
+	                intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "xml" });
+	                
+	                startActivityForResult(intent, PICK_FILE);
+				}
+				else if(arg0.getItemId() == R.id.np3){
+					String url = "http://meatifyme-dropoff.ciki.me/";
+					Intent i = new Intent(Intent.ACTION_VIEW);
+					i.setData(Uri.parse(url));
+					startActivity(i);
+				}
+				return false;
+			}
+			
+		});
+		getMenuInflater().inflate(R.menu.niveis, niveis_popup.getMenu());
 		
 		//loading
 		loading_view = inflater.inflate(R.layout.laoding_layout, main_layout,false);
@@ -195,6 +229,22 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 				}
 		       });
 	}
+	
+	public synchronized void onActivityResult(final int requestCode,
+            int resultCode, final Intent data) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                    if (requestCode == PICK_FILE) {
+                            String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
+                            this.maingame.new_custom_level(filePath);
+                            this.setNiveisPopupMenu();
+                    }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+            	Log.d("PICK_FILE", "Canceled by user");
+            }
+
+    }
 	
 	protected Handler handler = new Handler(){
 		@Override
@@ -271,7 +321,7 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 			handler.sendEmptyMessage(SHOW_INGAME_VIEW);
 			break;
 		case R.id.btnNiveis:
-			niveis_popup_menu.show();
+			niveis_popup.show();
 			break;
 		case R.id.btnStartGame:
 			maingame.gotoMainMenu();
@@ -334,12 +384,11 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 	@Override
 	public void setNiveisPopupMenu() {
 		// TODO Auto-generated method stub
-		Menu menu = niveis_popup_menu.getMenu();
+		Menu menu = niveis_icon_popup_menu.getMenu();
 		menu.clear();
 		for(int i=0;i<maingame.nomes_levels_custom.length;i++){
 			menu.add(maingame.nomes_levels_custom[i].replace(".xml", ""));
     	}
 		menu.add("Cancel");
-		menu.add("Browse more online");
 	}
 }
