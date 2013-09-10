@@ -93,8 +93,7 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
         
         main_layout.addView(gameView);
         
-        
-        
+    
         AdRequest adreq = new AdRequest();
         //adreq.addTestDevice("90E7CA239B2B610FB2242326D511B267");
         
@@ -317,7 +316,8 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 		{
 		case R.id.btnCampanha:
 			handler.sendEmptyMessage(HIDE_MAINMENU);
-			maingame.startLevel(0);
+			maingame.setScreen(maingame.campanha);
+			maingame.campanha.start();
 			handler.sendEmptyMessage(SHOW_INGAME_VIEW);
 			break;
 		case R.id.btnNiveis:

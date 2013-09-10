@@ -50,6 +50,7 @@ public class MeatifyMe extends Game{
 	LevelInputListenner inputListenner;
 	
 	//cena de niveis
+	Campaign campanha;
 	Level curLevel;
 	static float bWidth,bHeight;
 	public static String LEVELS_PATH = "/MeatifyMe/Levels/";

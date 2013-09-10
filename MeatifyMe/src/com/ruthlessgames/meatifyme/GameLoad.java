@@ -63,6 +63,7 @@ public class GameLoad extends UI implements LoadingScreen{
 		Sounds.load();
 		maingame.loadLevels();
 		maingame.loadCustomLevels();
+		maingame.campanha = new Campaign(maingame);
 		maingame.inputListenner = new LevelInputListenner(maingame);
 		maingame.inputGesture = new GestureDetector(maingame.inputListenner);
 		maingame.actionResolver.setNiveisPopupMenu();
@@ -168,6 +169,91 @@ public class GameLoad extends UI implements LoadingScreen{
 		asm.load("player/stage1/sfx/Level Up.ogg", Music.class);
 		asm.load("player/stage1/sfx/Morrer.ogg", Music.class);
 		
+		
+		//campaign stage 1
+		//level 1
+		asm.load("levels/campaign/stage_1/level1/1.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level1/2.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level1/3.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level1/4.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level1/5.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level1/6.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level1/7.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level1/8.png",Texture.class);
+		
+		//level2
+		asm.load("levels/campaign/stage_1/level2/1.png",Texture.class);
+		
+		//level3
+		asm.load("levels/campaign/stage_1/level3/1.png",Texture.class);
+		
+		//level4
+		asm.load("levels/campaign/stage_1/level4/1.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level4/2.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level4/3.png",Texture.class);
+		asm.load("levels/campaign/stage_1/level4/4.png",Texture.class);
+		
+		//evolution
+		asm.load("levels/campaign/stage_1/evolution/1.png",Texture.class);
+		asm.load("levels/campaign/stage_1/evolution/2.png",Texture.class);
+		asm.load("levels/campaign/stage_1/evolution/3.png",Texture.class);
+		asm.load("levels/campaign/stage_1/evolution/4.png",Texture.class);
+		asm.load("levels/campaign/stage_1/evolution/5.png",Texture.class);
+		
+		//campaign stage2
+		//level6
+		asm.load("levels/campaign/stage_2/level6/1.png",Texture.class);
+		
+		//level7
+		asm.load("levels/campaign/stage_2/level7/1.png",Texture.class);
+		
+		//level8
+		asm.load("levels/campaign/stage_2/level8/1.png",Texture.class);
+		asm.load("levels/campaign/stage_2/level8/2.png",Texture.class);
+		
+		//evolution
+		asm.load("levels/campaign/stage_2/evolution/1.png",Texture.class);
+		asm.load("levels/campaign/stage_2/evolution/2.png",Texture.class);
+		asm.load("levels/campaign/stage_2/evolution/3.png",Texture.class);
+		asm.load("levels/campaign/stage_2/evolution/4.png",Texture.class);
+		asm.load("levels/campaign/stage_2/evolution/5.png",Texture.class);
+		asm.load("levels/campaign/stage_2/evolution/6.png",Texture.class);
+		asm.load("levels/campaign/stage_2/evolution/7.png",Texture.class);
+		asm.load("levels/campaign/stage_2/evolution/8.png",Texture.class);
+		asm.load("levels/campaign/stage_2/evolution/9.png",Texture.class);
+		
+		//campaign stage3
+		//level9
+		asm.load("levels/campaign/stage_3/level9/1.png",Texture.class);
+		
+		//level10
+		asm.load("levels/campaign/stage_3/level10/1.png",Texture.class);
+		asm.load("levels/campaign/stage_3/level10/2.png",Texture.class);
+		asm.load("levels/campaign/stage_3/level10/3.png",Texture.class);
+		
+		//level11
+		asm.load("levels/campaign/stage_3/level11/1.png",Texture.class);
+		
+		//evolution
+		asm.load("levels/campaign/stage_3/evolution/1.png",Texture.class);
+		asm.load("levels/campaign/stage_3/evolution/2.png",Texture.class);
+		asm.load("levels/campaign/stage_3/evolution/3.png",Texture.class);
+		
+		//campaign stage4
+		//level12
+		asm.load("levels/campaign/stage_4/level12/1.png",Texture.class);
+		
+		//level13
+		asm.load("levels/campaign/stage_4/level13/1.png",Texture.class);
+		
+		//level14
+		asm.load("levels/campaign/stage_4/level14/1.png",Texture.class);
+		
+		//level15
+		asm.load("levels/campaign/stage_4/level15/1.png",Texture.class);
+		
+		//level16
+		asm.load("levels/campaign/stage_4/level16/1.png",Texture.class);
 	}
 	
 	@Override

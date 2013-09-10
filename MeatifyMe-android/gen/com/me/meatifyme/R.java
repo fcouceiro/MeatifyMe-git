@@ -35,24 +35,22 @@ public final class R {
         public static final int icon=0x7f02000f;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f090014;
-        public static final int bl1=0x7f09001e;
-        public static final int bl10=0x7f090027;
-        public static final int bl11=0x7f090028;
-        public static final int bl12=0x7f090029;
-        public static final int bl2=0x7f09001f;
-        public static final int bl3=0x7f090020;
-        public static final int bl4=0x7f090021;
-        public static final int bl5=0x7f090022;
-        public static final int bl6=0x7f090023;
-        public static final int bl7=0x7f090024;
-        public static final int bl8=0x7f090025;
-        public static final int bl9=0x7f090026;
-        public static final int blCancel=0x7f09002a;
+        public static final int bl1=0x7f090017;
+        public static final int bl10=0x7f090020;
+        public static final int bl11=0x7f090021;
+        public static final int bl12=0x7f090022;
+        public static final int bl2=0x7f090018;
+        public static final int bl3=0x7f090019;
+        public static final int bl4=0x7f09001a;
+        public static final int bl5=0x7f09001b;
+        public static final int bl6=0x7f09001c;
+        public static final int bl7=0x7f09001d;
+        public static final int bl8=0x7f09001e;
+        public static final int bl9=0x7f09001f;
+        public static final int blCancel=0x7f090023;
         public static final int btnBlockType=0x7f09000d;
         public static final int btnCampanha=0x7f090011;
         public static final int btnNiveis=0x7f090010;
-        public static final int btnPlayNiveis=0x7f090015;
         public static final int btnStartGame=0x7f09000f;
         public static final int checkSound=0x7f090013;
         public static final int fdButtonCancel=0x7f090008;
@@ -66,17 +64,12 @@ public final class R {
         public static final int fdrowimage=0x7f09000b;
         public static final int fdrowtext=0x7f09000c;
         public static final int lblMainmenuDescription=0x7f090012;
-        public static final int np1=0x7f09001b;
-        public static final int np2=0x7f09001c;
-        public static final int np3=0x7f09001d;
+        public static final int np1=0x7f090014;
+        public static final int np2=0x7f090015;
+        public static final int np3=0x7f090016;
         public static final int path=0x7f09000a;
         public static final int pbarLoading=0x7f09000e;
         public static final int relativeLayout01=0x7f090000;
-        public static final int spinnerCustomLevels=0x7f090016;
-        public static final int spinnerNiveisCampanha=0x7f090017;
-        public static final int spinnerNiveisCustom=0x7f090019;
-        public static final int strLoading=0x7f090018;
-        public static final int textView2=0x7f09001a;
         public static final int textViewFilename=0x7f090006;
     }
     public static final class integer {
@@ -88,7 +81,6 @@ public final class R {
         public static final int ingame_layout=0x7f030002;
         public static final int laoding_layout=0x7f030003;
         public static final int main=0x7f030004;
-        public static final int niveis_layout=0x7f030005;
     }
     public static final class menu {
         public static final int niveis=0x7f080000;

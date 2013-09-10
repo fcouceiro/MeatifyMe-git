@@ -8,23 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <Button
-            android:id="@+id/btnNiveis"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnCampanha"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:text="@string/strBtnNiveis" />
-
-        <Button
-            android:id="@+id/btnCampanha"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="@string/strBtnCampanha" />
-
         <CheckBox
             android:id="@+id/checkSound"
             android:layout_width="wrap_content"
@@ -39,13 +22,28 @@
             android:id="@+id/lblMainmenuDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnCampanha"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="19dp"
-            android:gravity="center"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_horizontal"
             android:text="@string/lblMainMenuDescription"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/btnCampanha"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/strBtnCampanha" />
+
+        <Button
+            android:id="@+id/btnNiveis"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnCampanha"
+            android:layout_centerHorizontal="true"
+            android:text="@string/strBtnNiveis" />
 
     </RelativeLayout>
 
