@@ -24,7 +24,7 @@ public class Gordo4 extends Image implements Player{
 	
 	private boolean isWalkable(int a)
 	{
-		return(a != 0 && a != 6 && a != 8 && a != 11 && a != 12);
+		return(a != 0 && a != 11 && a != 12);
 	}
 	
 	public int update(){ //inteligencia artificial
@@ -389,6 +389,13 @@ public class Gordo4 extends Image implements Player{
 		// TODO Auto-generated method stub
 		this.xf = xf;
 		this.yf = yf;
+	}
+
+
+	@Override
+	public int getMoves() {
+		// TODO Auto-generated method stub
+		return moves;
 	}
 }
 

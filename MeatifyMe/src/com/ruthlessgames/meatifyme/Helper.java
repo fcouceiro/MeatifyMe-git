@@ -22,7 +22,7 @@ public class Helper {
 		maingame = main;
 	}
 	
-	public Level get(String filePath,boolean fromLocal)
+	public Level get(String filePath,boolean fromLocal,boolean campaign)
 	{
 		xml_reader = new XmlReader();
 	
@@ -40,7 +40,7 @@ public class Helper {
 		
 			
 			//instantiate new level to populate
-			curLevel = new Level(maingame,style,type,bord,nome);
+			curLevel = new Level(maingame,style,type,bord,nome,campaign);
 			
 			if (bord) {
 				//create border

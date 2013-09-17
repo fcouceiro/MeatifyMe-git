@@ -3,5 +3,5 @@
     <item android:id="@+id/np1"  android:title="@string/niveis_p1" android:orderInCategory="1"/>
     	<item android:id="@+id/np2" android:title="@string/niveis_p2" android:orderInCategory="2"/>
     	<item android:id="@+id/np3"  android:title="@string/niveis_p3" android:orderInCategory="3"/>
-
+	<item android:id="@+id/np4"  android:title="@string/niveis_p4" android:orderInCategory="4"/>
 </menu>

@@ -1,0 +1,43 @@
+<level style="3" type="1" name="level10">
+	<border b="false"/>
+	<bloco>
+		<tipo>1</tipo>
+		<posx>4</posx>
+		<posy>8</posy>
+	</bloco>
+	<bloco>
+		<tipo>4</tipo>
+		<posx>4</posx>
+		<posy>9</posy>
+	</bloco>
+	<bloco>
+		<tipo>1</tipo>
+		<posx>5</posx>
+		<posy>8</posy>
+	</bloco>
+	<bloco>
+		<tipo>8</tipo>
+		<posx>7</posx>
+		<posy>6</posy>
+	</bloco>
+	<bloco>
+		<tipo>8</tipo>
+		<posx>7</posx>
+		<posy>8</posy>
+	</bloco>
+	<bloco>
+		<tipo>8</tipo>
+		<posx>13</posx>
+		<posy>6</posy>
+	</bloco>
+	<bloco>
+		<tipo>7</tipo>
+		<posx>18</posx>
+		<posy>5</posy>
+	</bloco>
+	<bloco>
+		<tipo>3</tipo>
+		<posx>18</posx>
+		<posy>6</posy>
+	</bloco>
+</level>

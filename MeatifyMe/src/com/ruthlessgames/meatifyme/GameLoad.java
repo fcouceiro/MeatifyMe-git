@@ -64,8 +64,6 @@ public class GameLoad extends UI implements LoadingScreen{
 		maingame.loadLevels();
 		maingame.loadCustomLevels();
 		maingame.campanha = new Campaign(maingame);
-		maingame.inputListenner = new LevelInputListenner(maingame);
-		maingame.inputGesture = new GestureDetector(maingame.inputListenner);
 		maingame.actionResolver.setNiveisPopupMenu();
 		maingame.waitscreen = new WaitScreen(maingame);
 	}

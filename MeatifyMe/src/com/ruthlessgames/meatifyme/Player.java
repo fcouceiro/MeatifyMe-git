@@ -13,4 +13,5 @@ public interface Player{
 	public void win();
 	public void lose();
 	public void updateMoves();
+	public int getMoves();
 }

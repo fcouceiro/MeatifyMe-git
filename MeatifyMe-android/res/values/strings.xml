@@ -18,20 +18,23 @@
                 <string name="strBtnStart">Tap here to wake Zacarias!</string>
                 <string name="strBlockStyle">Block style</string>
                 
- <string name ="info_bl1">sadasd</string>
-<string name ="info_bl2"></string>
-<string name ="info_bl3"></string>
-<string name ="info_bl4"></string>
-<string name ="info_bl5"></string>
-<string name ="info_bl6"></string>
-<string name ="info_bl7"></string>
-<string name ="info_bl8"></string>
-<string name ="info_bl9"></string>
-<string name ="info_bl10"></string>
-<string name ="info_bl11"></string>
-<string name ="info_bl12"></string>
+<string name ="info_bl1">Brick - Unrestricted</string>
+<string name ="info_bl2">Stone - Costs two moves (to move)</string>
+<string name ="info_bl3">End point - Where the player wins the game</string>
+<string name ="info_bl4">Start point - Where the player starts</string>
+<string name ="info_bl5">Sand - Needs to be over other block</string>
+<string name ="info_bl6">Glass - Can\'t build over this block</string>
+<string name ="info_bl7">Rocket - Needs to levitate</string>
+<string name ="info_bl8">Forever alone - One block away from others</string>
+<string name ="info_bl9">Cloud - Doesn\'t costs any move</string>
+<string name ="info_bl10">Rock - Permanent</string>
+<string name ="info_bl11">Spikes - Mortal</string>
+<string name ="info_bl12">Lava - Mortal</string>
 
 <string name ="niveis_p1">Select</string>
 <string name ="niveis_p2">Import</string>
 <string name ="niveis_p3">Browse more online</string>
+<string name ="niveis_p4">Create more</string>
+<string name="strReady">I\'m ready if you are! \nClick to start</string>
+<string name="nullString"></string>
 </resources>

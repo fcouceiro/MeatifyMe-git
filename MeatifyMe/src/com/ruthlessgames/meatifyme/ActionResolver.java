@@ -9,4 +9,9 @@ public interface ActionResolver {
      public void showLoading();
      public int getBlockType();
      public void setNiveisPopupMenu();
+     public void showReady(boolean show);
+     public void showIngame(boolean show);
+     public void resetPlayButton();
+     public void startChronometer();
+     public void stopChronometer();
 }

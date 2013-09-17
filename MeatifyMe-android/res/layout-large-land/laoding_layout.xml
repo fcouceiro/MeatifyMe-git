@@ -17,8 +17,8 @@
         android:id="@+id/btnStartGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pbarLoading"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="@string/strBtnStart" />
 
 </RelativeLayout>

@@ -8,17 +8,17 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnStartGame"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="94dp"
+        android:layout_marginBottom="56dp"
         android:max="@integer/pbarMax" />
 
     <Button
         android:id="@+id/btnStartGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pbarLoading"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="@string/strBtnStart" />
 
 </RelativeLayout>

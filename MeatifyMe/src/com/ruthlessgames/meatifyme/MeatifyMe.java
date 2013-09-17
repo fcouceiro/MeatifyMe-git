@@ -45,9 +45,6 @@ public class MeatifyMe extends Game{
 	GameLoad loading_screen;
 	static AssetManager asm;
 	
-	//Input processor
-	GestureDetector inputGesture;
-	LevelInputListenner inputListenner;
 	
 	//cena de niveis
 	Campaign campanha;
@@ -169,14 +166,14 @@ public class MeatifyMe extends Game{
 	public void startLevel(int i)
 	{
 		Sounds.maintheme.stop();
-		this.curLevel = loader.get(this.nomes_levels[i], false);
+		this.curLevel = loader.get(this.nomes_levels[i], false,true);
 		setScreen(curLevel);
 	}
 	
 	public void startCustomLevel(int i)
 	{
 		Sounds.maintheme.stop();
-		this.curLevel = loader.get(this.nomes_levels_custom[i], true);
+		this.curLevel = loader.get(this.nomes_levels_custom[i], true,false);
 		setScreen(curLevel);
 	}
 	

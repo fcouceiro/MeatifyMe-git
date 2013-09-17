@@ -1,8 +1,9 @@
  package com.ruthlessgames.meatifyme;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,31 +17,28 @@ public class Level extends UI implements Cloneable{
 	
 	int type;
 	int style;
-	int moves,time;
+	int time;
 	Vector2 pl_ini_pos;
 	int max_x,max_y;
 	CharSequence name;
 	boolean border;
 	
-	private ArrayList<Image> blocos = new ArrayList<Image>();
-	int tipos[][];
-	
-	//score
-	boolean completed;
+	private HashMap<String,Bloco> blocos = new HashMap<String,Bloco>();
+	private int tipos[][];
 	
 	MeatifyMe maingame;
 	
 	//ingame stuff
-	int block_type =  1; //tijolo
-	int collisionbox_folga = 10; //(pixeis)
-	Player player;
-	Vector2 player_initialposition;
+	private Player player;
+	private Vector2 player_initialposition;
+	boolean campaign;
+	private boolean play = false;
 	
 	public Level(MeatifyMe main){
 		super(main.batch,main.font,false);
 	}
 	
-	public Level(MeatifyMe main,int style, int type,boolean border, CharSequence name)
+	public Level(MeatifyMe main,final int style, int type,boolean border, CharSequence name,boolean campaign)
 	{
 		super(main.batch,main.font,false);
 		maingame=main;
@@ -49,6 +47,7 @@ public class Level extends UI implements Cloneable{
 		max_x = 20;
 		max_y = 14;
 		this.name = name;
+		this.campaign = campaign;
 		
 		tipos = new int[max_x][max_y];
 		for(int i=0;i<20;i++)
@@ -58,7 +57,6 @@ public class Level extends UI implements Cloneable{
 		this.style = style;
 		this.setBg(style);
 		
-		completed = false;
 		
 		//gera player
 		switch(style)
@@ -77,14 +75,109 @@ public class Level extends UI implements Cloneable{
 			break;
 		}
 		
-		
+		stage.addListener(new InputListener(){
+			 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+	               	
+	                return true;
+	        }
+	        
+	        public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+	        	
+	        	int xf = (int) (x / MeatifyMe.bWidth);
+	    		int yf = (int) (y / MeatifyMe.bHeight);
+	    		
+	    		if(xf == 0 || xf == 19 || yf == 0 || yf == 13){
+	    			maingame.actionResolver.showShortToast("Can't build here!");
+	    			return;
+	    		}
+	    		
+	    		int type = maingame.actionResolver.getBlockType();
+	    		
+	    		if(type == 2){ //se stone tira dois moves
+    				player.updateMoves();
+	    		}
+	    		
+	    		if(type != 9)
+	    		player.updateMoves();
+	    		
+	    		if(tipos[xf][yf] != 0){
+	    			//bloco ja existe -> remover
+	    			
+	    			if(tipos[xf][yf] == 10){
+	    				maingame.actionResolver.showShortToast("Rocks are permanent!");
+		    			return;
+	    			}
+	    			
+	    			tipos[xf][yf]  = 0;
+	    			
+	    			table.removeActor(blocos.get(getImageId(xf, yf)).image);
+	    			blocos.remove(getImageId(xf, yf));
+	    			
+	    			
+	    			return;
+	    		}
+	    		
+	    		switch(type){
+	    		case 5:
+	    			//caso seja areia o bloco por baixo nao pode ser vazio
+	    			if(tipos[xf][yf -1] == 0){
+	    				maingame.actionResolver.showShortToast("Needs to be over other block!");
+	    				return;
+	    			}
+	    			break;
+	    		case 7:
+	    			//caso seja rocket o bloco por baixo tem de ser vazio
+	    			if(tipos[xf][yf -1] != 0){
+	    				maingame.actionResolver.showShortToast("Needs to levitate!");
+	    				return;
+	    			}
+	    			break;
+	    		case 8:
+	    			//forever alone
+	    			if(tipos[xf][yf -1] != 0 || tipos[xf][yf +1] != 0 || tipos[xf-1][yf ] != 0 || tipos[xf+1][yf] != 0  || tipos[xf+1][yf+1] != 0  || tipos[xf+1][yf -1] != 0 || tipos[xf-1][yf-1] != 0 || tipos[xf-1][yf +1] != 0 ){
+	    				maingame.actionResolver.showShortToast("One block away from others!");
+	    				return;
+	    			}
+	    			break;
+	    		}
+	    		
+	    		if(tipos[xf][yf -1] == 6) //building over glass
+	    		{
+	    			maingame.actionResolver.showShortToast("Can't build over glass!");
+	    			return;
+	    		}
+	    		else{
+	    			tipos[xf][yf] = type;
+	    		}
+	    		
+	    		if(!MeatifyMe.debug) Gdx.app.log("NEW BLOCK", "At (" + getImageId(xf, yf) + ") type: " + type);
+	    		
+	    	
+	    		//create image
+	    		Image temp = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(type),32*(4-style),32,32)));
+	    		temp.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
+	    		temp.setPosition(xf * MeatifyMe.bWidth, yf * MeatifyMe.bHeight);
+	    		temp.getColor().a = 0.0f;
+	    		temp.addAction(Actions.fadeIn(0.8f));
+	    		
+	    		Bloco bloco_temp = new Bloco(type,temp);
+	    		blocos.put(getImageId(xf, yf), bloco_temp);
+	    		table.addActor(temp);
+	    		
+	        }
+	        
+		});
 
 		
+	}
+	private String getImageId(int x, int y)
+	{
+		return x + ";" + y;
 	}
 	
 	public void addBlock(final int xi,final int yi,int type)
 	{
-		if(tipos[xi][yi] != 0 || xi == 0 || yi == 0 || xi == 19 || yi == 13){
+		if(xi == 0 || yi == 0 || xi == 19 || yi == 13){
 			this.maingame.actionResolver.showShortToast("Can't build here!");
 			return;
 		}
@@ -92,39 +185,24 @@ public class Level extends UI implements Cloneable{
 		final Image newblock = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(type),32*(4-style),32,32)));
 		newblock.setPosition(xi * MeatifyMe.bWidth, yi * MeatifyMe.bHeight);
 		newblock.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
+
 		
-		newblock.addListener(new InputListener() {
-	        public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-               	newblock.getColor().a = 0.6f;
-                return true;
-        }
-        
-        public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-        	if(x < newblock.getWidth() && x >0 && y<newblock.getHeight() && y > 0){
-        		blocos.remove(newblock);
-        		newblock.clearActions();
-				newblock.addAction(Actions.sequence(Actions.fadeOut(0.5f),Actions.removeActor()));
-				tipos[xi][yi] = 0;
-        	}
-        	else newblock.getColor().a = 1;
-      
-        }
-		});
-		
-		if(type != 4 && type != 3)
-		blocos.add(newblock);
+		if(type != 4 && type != 3){
+			Bloco bloco_temp = new Bloco(type,newblock);
+    		blocos.put(getImageId(xi, yi), bloco_temp);
+    		tipos[xi][yi] = type;
+		}
 		
 		table.addActor(newblock);
 		
 		newblock.getColor().a = 0.0f;
 		newblock.addAction(Actions.fadeIn(0.5f));
 		
-		if(type != 4 && type != 3)
-		tipos[xi][yi] = type;
 		
 		if(type == 4) this.player.setInitialPos(xi,yi);
 		else if(type == 3) this.player.setEndPointPos(xi, yi);
-		if(MeatifyMe.debug) Gdx.app.log("Block", "added");
+		if(MeatifyMe.debug) Gdx.app.log("Block", "added " + type);
+		
 	}
 	
 	public int getBlockType(int x,int y)
@@ -195,10 +273,10 @@ public class Level extends UI implements Cloneable{
 	@Override
 	public void show(){
 		super.show();
-		
-		ui_input.addProcessor(maingame.inputListenner);
-		ui_input.addProcessor(maingame.inputGesture);
-		
+
+		//ui_input.addProcessor(maingame.inputListenner);
+		//ui_input.addProcessor(maingame.inputGesture);
+		maingame.actionResolver.startChronometer();
 		if(maingame.sound){
 		
 		switch(style)
@@ -231,18 +309,51 @@ public class Level extends UI implements Cloneable{
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				if(player.getActionsNumber() == 0){
+				if(Gdx.input.isKeyPressed(Keys.BACK)){
+					if(!campaign)
+						maingame.gotoMainMenu();
+						else{
+							maingame.setScreen(maingame.campanha);
+							maingame.campanha.start();
+						}
+						
+						maingame.actionResolver.stopChronometer();
+						maingame.actionResolver.showIngame(false);
+				}
+				
+				if(player.getActionsNumber() == 0 && play){
+					
 					int returned_by_gordo = player.update();
 					if(returned_by_gordo == 1){
 						player.win();
+						
+						if(!campaign)
 						maingame.gotoMainMenu();
+						else{
+							maingame.campanha.incLevel();
+						}
+						
+						maingame.actionResolver.stopChronometer();
+						maingame.actionResolver.resetPlayButton();
+						maingame.actionResolver.showIngame(false);
 					}
 					else if(returned_by_gordo == -2){
-						ui_input.removeProcessor(maingame.inputGesture);
-						ui_input.removeProcessor(maingame.inputListenner);
+						player.lose();
+						
+						if(!campaign)
+							maingame.gotoMainMenu();
+							else{
+								maingame.setScreen(maingame.campanha);
+								maingame.campanha.start();
+							}
+							
+						maingame.actionResolver.stopChronometer();
+							maingame.actionResolver.showIngame(false);
 					}
 				}
 			}})));
+		
+		maingame.actionResolver.showIngame(true);
 	}
 	
 	 protected Level clone()
@@ -255,5 +366,14 @@ public class Level extends UI implements Cloneable{
 		}
 		return null;
 	}
+	 
+	public void play(){
+		this.play = true;
+	}
+	
+	public void pause(){
+		this.play = false;
+	}
+	 
 
 }
