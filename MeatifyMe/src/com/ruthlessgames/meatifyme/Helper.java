@@ -22,7 +22,7 @@ public class Helper {
 		maingame = main;
 	}
 	
-	public Level get(String filePath,boolean fromLocal,boolean campaign)
+	public Level get(Player pl,String filePath,boolean fromLocal,boolean campaign)
 	{
 		xml_reader = new XmlReader();
 	
@@ -41,6 +41,7 @@ public class Helper {
 			
 			//instantiate new level to populate
 			curLevel = new Level(maingame,style,type,bord,nome,campaign);
+			curLevel.setPlayer(pl);
 			
 			if (bord) {
 				//create border
@@ -65,9 +66,8 @@ public class Helper {
 					posx = Integer.parseInt(curE.getChildByName("posx").getText());
 					posy = Integer.parseInt(curE.getChildByName("posy").getText());
 					
+					if(tipo != 4)
 					curLevel.addBlock(posx, posy, tipo);
-					
-					if(tipo == 10) curLevel.pl_ini_pos = new Vector2(posx,posy);
 				}
 			
 				

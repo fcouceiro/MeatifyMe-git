@@ -2,6 +2,7 @@ package com.ruthlessgames.meatifyme;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -412,5 +413,23 @@ public class Campaign extends UI{
 	public int getCurLevel()
 	{
 		return this.cur_level;
+	}
+	
+	@Override
+	public void render(float arg0){
+		super.render(arg0);
+		
+		if(Gdx.input.isKeyPressed(Keys.BACK)){
+			maingame.gotoMainMenu();
+		}
+	}
+	
+	@Override
+	public void show(){
+		super.show();
+		
+		if(maingame.sound){
+			Sounds.stop();
+		}
 	}
 }

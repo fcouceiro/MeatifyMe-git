@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -26,11 +30,12 @@ public class Level extends UI implements Cloneable{
 	private HashMap<String,Bloco> blocos = new HashMap<String,Bloco>();
 	private int tipos[][];
 	
+	GestureDetector gestureDetector;
+	CameraController controller;
 	MeatifyMe maingame;
 	
 	//ingame stuff
 	private Player player;
-	private Vector2 player_initialposition;
 	boolean campaign;
 	private boolean play = false;
 	
@@ -38,7 +43,7 @@ public class Level extends UI implements Cloneable{
 		super(main.batch,main.font,false);
 	}
 	
-	public Level(MeatifyMe main,final int style, int type,boolean border, CharSequence name,boolean campaign)
+	public Level(MeatifyMe main,int style, int type,boolean border, CharSequence name,boolean campaign)
 	{
 		super(main.batch,main.font,false);
 		maingame=main;
@@ -57,119 +62,123 @@ public class Level extends UI implements Cloneable{
 		this.style = style;
 		this.setBg(style);
 		
-		
-		//gera player
-		switch(style)
-		{
+		//setup camera listener
+		controller = new CameraController();
+		gestureDetector = new GestureDetector(10, 0.5f, 0.5f, 0.15f, controller);
+	}
+	
+	public void setPlayer(Player gordo){
+		this.player = gordo;
+		switch(style){
 		case 1:
-			player = new Gordo1();
+			this.player.setState(Player.EvolState.GORDO_1);
 			break;
 		case 2:
-			player = new Gordo2();
+			this.player.setState(Player.EvolState.GORDO_2);
 			break;
 		case 3:
-			player = new Gordo3();
+			this.player.setState(Player.EvolState.GORDO_3);
 			break;
 		case 4:
-			player = new Gordo4();
+			this.player.setState(Player.EvolState.GORDO_4);
 			break;
 		}
 		
-		stage.addListener(new InputListener(){
-			 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-	               	
-	                return true;
-	        }
-	        
-	        public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-	        	
-	        	int xf = (int) (x / MeatifyMe.bWidth);
-	    		int yf = (int) (y / MeatifyMe.bHeight);
-	    		
-	    		if(xf == 0 || xf == 19 || yf == 0 || yf == 13){
-	    			maingame.actionResolver.showShortToast("Can't build here!");
-	    			return;
-	    		}
-	    		
-	    		int type = maingame.actionResolver.getBlockType();
-	    		
-	    		if(type == 2){ //se stone tira dois moves
-    				player.updateMoves();
-	    		}
-	    		
-	    		if(type != 9)
-	    		player.updateMoves();
-	    		
-	    		if(tipos[xf][yf] != 0){
-	    			//bloco ja existe -> remover
-	    			
-	    			if(tipos[xf][yf] == 10){
-	    				maingame.actionResolver.showShortToast("Rocks are permanent!");
-		    			return;
-	    			}
-	    			
-	    			tipos[xf][yf]  = 0;
-	    			
-	    			table.removeActor(blocos.get(getImageId(xf, yf)).image);
-	    			blocos.remove(getImageId(xf, yf));
-	    			
-	    			
-	    			return;
-	    		}
-	    		
-	    		switch(type){
-	    		case 5:
-	    			//caso seja areia o bloco por baixo nao pode ser vazio
-	    			if(tipos[xf][yf -1] == 0){
-	    				maingame.actionResolver.showShortToast("Needs to be over other block!");
-	    				return;
-	    			}
-	    			break;
-	    		case 7:
-	    			//caso seja rocket o bloco por baixo tem de ser vazio
-	    			if(tipos[xf][yf -1] != 0){
-	    				maingame.actionResolver.showShortToast("Needs to levitate!");
-	    				return;
-	    			}
-	    			break;
-	    		case 8:
-	    			//forever alone
-	    			if(tipos[xf][yf -1] != 0 || tipos[xf][yf +1] != 0 || tipos[xf-1][yf ] != 0 || tipos[xf+1][yf] != 0  || tipos[xf+1][yf+1] != 0  || tipos[xf+1][yf -1] != 0 || tipos[xf-1][yf-1] != 0 || tipos[xf-1][yf +1] != 0 ){
-	    				maingame.actionResolver.showShortToast("One block away from others!");
-	    				return;
-	    			}
-	    			break;
-	    		}
-	    		
-	    		if(tipos[xf][yf -1] == 6) //building over glass
-	    		{
-	    			maingame.actionResolver.showShortToast("Can't build over glass!");
-	    			return;
-	    		}
-	    		else{
-	    			tipos[xf][yf] = type;
-	    		}
-	    		
-	    		if(!MeatifyMe.debug) Gdx.app.log("NEW BLOCK", "At (" + getImageId(xf, yf) + ") type: " + type);
-	    		
-	    	
-	    		//create image
-	    		Image temp = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(type),32*(4-style),32,32)));
-	    		temp.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
-	    		temp.setPosition(xf * MeatifyMe.bWidth, yf * MeatifyMe.bHeight);
-	    		temp.getColor().a = 0.0f;
-	    		temp.addAction(Actions.fadeIn(0.8f));
-	    		
-	    		Bloco bloco_temp = new Bloco(type,temp);
-	    		blocos.put(getImageId(xf, yf), bloco_temp);
-	    		table.addActor(temp);
-	    		
-	        }
-	        
-		});
-
+		player.blocos = tipos;
 		
+		table.addActor(player);
 	}
+	
+	public void setPlayerInitialPos(Vector2 pos){
+		pl_ini_pos = pos;
+		player.setPosition(pl_ini_pos.x * MeatifyMe.bWidth, pl_ini_pos.y * MeatifyMe.bHeight);
+	}
+	private void insertBlockInLevel(){
+		Vector2 inCoord = this.getLastInputCoordinatesCart();
+		int xf = (int) inCoord.x;
+		int yf = (int) inCoord.y;
+		
+		Gdx.app.log("pos", xf + ";" + yf);
+		
+		if(xf == 0 || xf == 19 || yf == 0 || yf == 13){
+			maingame.actionResolver.showShortToast("Can't build here!");
+			return;
+		}
+		
+		int type = maingame.actionResolver.getBlockType();
+		
+		if(type == 2){ //se stone tira dois moves
+			player.updateMoves();
+		}
+		
+		if(type != 9)
+		player.updateMoves();
+		
+		if(tipos[xf][yf] != 0){
+			//bloco ja existe -> remover
+			
+			if(tipos[xf][yf] == 10){
+				maingame.actionResolver.showShortToast("Rocks are permanent!");
+    			return;
+			}
+			
+			tipos[xf][yf]  = 0;
+			
+			table.removeActor(blocos.get(getImageId(xf, yf)).image);
+			blocos.remove(getImageId(xf, yf));
+			
+			
+			return;
+		}
+		
+		switch(type){
+		case 5:
+			//caso seja areia o bloco por baixo nao pode ser vazio
+			if(tipos[xf][yf -1] == 0){
+				maingame.actionResolver.showShortToast("Needs to be over other block!");
+				return;
+			}
+			break;
+		case 7:
+			//caso seja rocket o bloco por baixo tem de ser vazio
+			if(tipos[xf][yf -1] != 0){
+				maingame.actionResolver.showShortToast("Needs to levitate!");
+				return;
+			}
+			break;
+		case 8:
+			//forever alone
+			if(tipos[xf][yf -1] != 0 || tipos[xf][yf +1] != 0 || tipos[xf-1][yf ] != 0 || tipos[xf+1][yf] != 0  || tipos[xf+1][yf+1] != 0  || tipos[xf+1][yf -1] != 0 || tipos[xf-1][yf-1] != 0 || tipos[xf-1][yf +1] != 0 ){
+				maingame.actionResolver.showShortToast("One block away from others!");
+				return;
+			}
+			break;
+		}
+		
+		if(tipos[xf][yf -1] == 6) //building over glass
+		{
+			maingame.actionResolver.showShortToast("Can't build over glass!");
+			return;
+		}
+		else{
+			tipos[xf][yf] = type;
+		}
+		
+		if(!MeatifyMe.debug) Gdx.app.log("NEW BLOCK", "At (" + getImageId(xf, yf) + ") type: " + type);
+		
+	
+		//create image
+		Image temp = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(type),32*(4-style),32,32)));
+		temp.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
+		temp.setPosition(xf * MeatifyMe.bWidth, yf * MeatifyMe.bHeight);
+		temp.getColor().a = 0.0f;
+		temp.addAction(Actions.fadeIn(0.8f));
+		
+		Bloco bloco_temp = new Bloco(type,temp);
+		blocos.put(getImageId(xf, yf), bloco_temp);
+		table.addActor(temp);
+	}
+	
 	private String getImageId(int x, int y)
 	{
 		return x + ";" + y;
@@ -199,7 +208,7 @@ public class Level extends UI implements Cloneable{
 		newblock.addAction(Actions.fadeIn(0.5f));
 		
 		
-		if(type == 4) this.player.setInitialPos(xi,yi);
+		if(type == 4) this.setPlayerInitialPos(new Vector2(xi,yi));
 		else if(type == 3) this.player.setEndPointPos(xi, yi);
 		if(MeatifyMe.debug) Gdx.app.log("Block", "added " + type);
 		
@@ -219,6 +228,7 @@ public class Level extends UI implements Cloneable{
 				Image newblock = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(tipo),32*(4-style),32,32)));
 				newblock.setPosition(p * MeatifyMe.bWidth, (max_y-1) * MeatifyMe.bHeight);
 				newblock.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
+				newblock.getColor().a = 0.6f;
 				table.addActor(newblock);
 			}
 			//bottom line
@@ -227,6 +237,7 @@ public class Level extends UI implements Cloneable{
 				Image newblock = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(tipo),32*(4-style),32,32)));
 				newblock.setPosition(p * MeatifyMe.bWidth, 0 * MeatifyMe.bHeight);
 				newblock.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
+				newblock.getColor().a = 0.6f;
 				table.addActor(newblock);
 			}
 			//left line
@@ -235,6 +246,7 @@ public class Level extends UI implements Cloneable{
 				Image newblock = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(tipo),32*(4-style),32,32)));
 				newblock.setPosition(0 * MeatifyMe.bWidth, p * MeatifyMe.bHeight);
 				newblock.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
+				newblock.getColor().a = 0.6f;
 				table.addActor(newblock);
 			}
 			//upper line
@@ -243,6 +255,7 @@ public class Level extends UI implements Cloneable{
 				Image newblock = new Image(new TextureRegionDrawable(new TextureRegion(Textures.blocos,32*(tipo),32*(4-style),32,32)));
 				newblock.setPosition((max_x -1) * MeatifyMe.bWidth, p * MeatifyMe.bHeight);
 				newblock.setSize(MeatifyMe.bWidth, MeatifyMe.bHeight);
+				newblock.getColor().a = 0.6f;
 				table.addActor(newblock);
 			}
 		
@@ -274,11 +287,11 @@ public class Level extends UI implements Cloneable{
 	public void show(){
 		super.show();
 
-		//ui_input.addProcessor(maingame.inputListenner);
-		//ui_input.addProcessor(maingame.inputGesture);
+		ui_input.addProcessor(this.gestureDetector);
+		
 		maingame.actionResolver.startChronometer();
 		if(maingame.sound){
-		
+			Sounds.stop();
 		switch(style)
 		{
 		case 1:
@@ -300,60 +313,55 @@ public class Level extends UI implements Cloneable{
 		}
 		
 		}
-		//setup player
-		player.setOnTable(tipos,table);
-		
-		
-		table.addAction(Actions.forever(Actions.run(new Runnable(){
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				if(Gdx.input.isKeyPressed(Keys.BACK)){
-					if(!campaign)
-						maingame.gotoMainMenu();
-						else{
-							maingame.setScreen(maingame.campanha);
-							maingame.campanha.start();
-						}
-						
-						maingame.actionResolver.stopChronometer();
-						maingame.actionResolver.showIngame(false);
-				}
-				
-				if(player.getActionsNumber() == 0 && play){
-					
-					int returned_by_gordo = player.update();
-					if(returned_by_gordo == 1){
-						player.win();
-						
-						if(!campaign)
-						maingame.gotoMainMenu();
-						else{
-							maingame.campanha.incLevel();
-						}
-						
-						maingame.actionResolver.stopChronometer();
-						maingame.actionResolver.resetPlayButton();
-						maingame.actionResolver.showIngame(false);
-					}
-					else if(returned_by_gordo == -2){
-						player.lose();
-						
-						if(!campaign)
-							maingame.gotoMainMenu();
-							else{
-								maingame.setScreen(maingame.campanha);
-								maingame.campanha.start();
-							}
-							
-						maingame.actionResolver.stopChronometer();
-							maingame.actionResolver.showIngame(false);
-					}
-				}
-			}})));
 		
 		maingame.actionResolver.showIngame(true);
+	}
+	
+	@Override
+	public void render(float arg0){
+		super.render(arg0);
+		
+		((OrthographicCamera)stage.getCamera()).update();
+		controller.update();
+		
+		if(Gdx.input.isKeyPressed(Keys.BACK)){
+				maingame.gotoMainMenu();
+
+				maingame.actionResolver.stopChronometer();
+				maingame.actionResolver.showIngame(false);
+		}
+		
+		if(player.getActionsNumber() == 0 && play){
+			
+			int returned_by_gordo = player.update();
+			
+			if(returned_by_gordo == 1){
+				player.playerWon();
+				
+				if(!campaign)
+				maingame.gotoMainMenu();
+				else{
+					maingame.campanha.incLevel();
+				}
+				
+				maingame.actionResolver.stopChronometer();
+				maingame.actionResolver.resetPlayButton();
+				maingame.actionResolver.showIngame(false);
+			}
+			else if(returned_by_gordo == -2){
+				player.playerLost();
+				
+				if(!campaign)
+					maingame.gotoMainMenu();
+					else{
+						maingame.setScreen(maingame.campanha);
+						maingame.campanha.start();
+					}
+					
+				maingame.actionResolver.stopChronometer();
+					maingame.actionResolver.showIngame(false);
+			}
+		}
 	}
 	
 	 protected Level clone()
@@ -375,5 +383,80 @@ public class Level extends UI implements Cloneable{
 		this.play = false;
 	}
 	 
+	private Vector2 getTileCoordinates(Vector2 pos){
+		float x = (pos.x / MeatifyMe.bWidth);
+		float y = (pos.y / MeatifyMe.bHeight);
+		return new Vector2(x,y);
+	}
+	
+	private Vector2 getLastInputCoordinatesCart(){
+		Vector3 worldCoordinates = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+		 ((OrthographicCamera)stage.getCamera()).unproject(worldCoordinates);
+		return getTileCoordinates(new Vector2(worldCoordinates.x,worldCoordinates.y));
+	}
+	
+	class CameraController implements GestureListener {
+		float velX, velY;
+		boolean flinging = false;
+		float initialScale = 1;
+		OrthographicCamera camera = (OrthographicCamera)stage.getCamera();
+		
+		public boolean touchDown (float x, float y, int pointer, int button) {
+			flinging = false;
+			initialScale = camera.zoom;
+			
+			return false;
+		}
 
+		@Override
+		public boolean tap (float x, float y, int count, int button) {
+			Level.this.insertBlockInLevel();
+			return false;
+		}
+
+		@Override
+		public boolean longPress (float x, float y) {
+			return false;
+		}
+
+		@Override
+		public boolean fling (float velocityX, float velocityY, int button) {
+			flinging = true;
+			velX = camera.zoom * velocityX * 0.5f;
+			velY = camera.zoom * velocityY * 0.5f;
+			return false;
+		}
+
+		@Override
+		public boolean pan (float x, float y, float deltaX, float deltaY) {
+			// Gdx.app.log("GestureDetectorTest", "pan at " + x + ", " + y);
+			camera.position.add(-deltaX * camera.zoom, deltaY * camera.zoom, 0);
+			return false;
+		}
+
+		@Override
+		public boolean zoom (float originalDistance, float currentDistance) {
+			float ratio = originalDistance / currentDistance;
+			camera.zoom = initialScale * ratio;
+			if(camera.zoom > 2.5) camera.zoom = 2.5f;
+			else if(camera.zoom < 0.4f) camera.zoom = 0.4f;
+			//System.out.println(camera.zoom);
+			return false;
+		}
+
+		@Override
+		public boolean pinch (Vector2 initialFirstPointer, Vector2 initialSecondPointer, Vector2 firstPointer, Vector2 secondPointer) {
+			return false;
+		}
+
+		public void update () {
+			if (flinging) {
+				velX *= 0.98f;
+				velY *= 0.98f;
+				camera.position.add(-velX * Gdx.graphics.getDeltaTime(), velY * Gdx.graphics.getDeltaTime(), 0);
+				if (Math.abs(velX) < 0.01f) velX = 0;
+				if (Math.abs(velY) < 0.01f) velY = 0;
+			}
+		}
+	}
 }

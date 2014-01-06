@@ -66,6 +66,8 @@ public class GameLoad extends UI implements LoadingScreen{
 		maingame.campanha = new Campaign(maingame);
 		maingame.actionResolver.setNiveisPopupMenu();
 		maingame.waitscreen = new WaitScreen(maingame);
+		
+		maingame.player = new Player();
 	}
 
 	@Override

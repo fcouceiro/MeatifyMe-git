@@ -47,6 +47,7 @@ public class MeatifyMe extends Game{
 	
 	
 	//cena de niveis
+	Player player;
 	Campaign campanha;
 	Level curLevel;
 	static float bWidth,bHeight;
@@ -91,13 +92,10 @@ public class MeatifyMe extends Game{
 	
 	public void gotoMainMenu(){
 		//
-		if(Sounds.sl1.isPlaying()) Sounds.sl1.stop();
-		if(Sounds.sl2.isPlaying()) Sounds.sl2.stop();
-		if(Sounds.sl3.isPlaying()) Sounds.sl3.stop();
-		if(Sounds.sl4.isPlaying()) Sounds.sl4.stop();
 		
 		actionResolver.showMainMenu();
 		if(sound){
+			Sounds.stop();
 		Sounds.maintheme.setLooping(true);
 		Sounds.maintheme.play();
 		}
@@ -166,14 +164,14 @@ public class MeatifyMe extends Game{
 	public void startLevel(int i)
 	{
 		Sounds.maintheme.stop();
-		this.curLevel = loader.get(this.nomes_levels[i], false,true);
+		this.curLevel = loader.get(player,this.nomes_levels[i], false,true);
 		setScreen(curLevel);
 	}
 	
 	public void startCustomLevel(int i)
 	{
 		Sounds.maintheme.stop();
-		this.curLevel = loader.get(this.nomes_levels_custom[i], true,false);
+		this.curLevel = loader.get(player,this.nomes_levels_custom[i], true,false);
 		setScreen(curLevel);
 	}
 	

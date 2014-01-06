@@ -76,4 +76,28 @@ public class Sounds {
 		Music temp = MeatifyMe.asm.get(key, Music.class);
 		return temp;
 	}
+	
+	static void stop(){
+		maintheme.stop();
+		sl1.stop();
+		sl2.stop();
+		sl3.stop();
+		sl4.stop();
+		
+		pl1_andar.stop();
+		
+		pl2_andar.stop();
+		pl2_subir.stop();
+		pl2_descer.stop();
+		
+		pl3_andar.stop();
+		pl3_subir.stop();
+		pl3_descer.stop();
+		peido.stop();
+		
+		pl4_andar.stop();
+		pl4_subir1.stop();
+		pl4_subir2.stop();
+		pl4_descer.stop();
+	}
 }
