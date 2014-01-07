@@ -45,14 +45,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-
+import com.me.meatifyme.R;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
 import com.lamerman.*;
-import com.me.meatifyme.R;
 import com.ruthlessgames.meatifyme.ActionResolver;
 import com.ruthlessgames.meatifyme.MeatifyMe;
 
@@ -598,8 +597,17 @@ public class MainActivity extends AndroidApplication implements ActionResolver,O
 	@Override
 	public void resetPlayButton() {
 		// TODO Auto-generated method stub
-		play = false;
-		btnPlayPause.setBackgroundResource(R.drawable.play);
+		
+		runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				play = false;
+				btnPlayPause.setBackgroundResource(R.drawable.play);
+			}
+			
+		});
 	}
 
 	@Override

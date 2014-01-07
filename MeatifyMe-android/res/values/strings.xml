@@ -2,8 +2,8 @@
 <resources>
     <string name="app_name">Meatify</string>
     <string name="Hello"></string>
-    <string name="strBtnNiveis">Niveis</string>
-    <string name="strBtnCampanha">Campanha</string>
+    <string name="strBtnNiveis"></string>
+    <string name="strBtnCampanha"></string>
     <string name="lblMainMenuDescription">Meatify is all about you, and meat!… and you. and Zacarias!</string>
     <string name="checkboxTextSound">Sound</string>
      <string-array name="levels_entries">
@@ -31,10 +31,10 @@
 <string name ="info_bl11">Spikes - Mortal</string>
 <string name ="info_bl12">Lava - Mortal</string>
 
-<string name ="niveis_p1">Select</string>
-<string name ="niveis_p2">Import</string>
-<string name ="niveis_p3">Browse more online</string>
-<string name ="niveis_p4">Create more</string>
+<string name ="niveis_p1">Select level</string>
+<string name ="niveis_p2">Import level</string>
+<string name ="niveis_p3">Browse community levels</string>
+<string name ="niveis_p4">Create level</string>
 <string name="strReady">I\'m ready if you are! \nClick to start</string>
 <string name="nullString"></string>
 </resources>

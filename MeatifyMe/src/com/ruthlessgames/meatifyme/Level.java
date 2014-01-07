@@ -207,9 +207,7 @@ public class Level extends UI implements Cloneable{
 		newblock.getColor().a = 0.0f;
 		newblock.addAction(Actions.fadeIn(0.5f));
 		
-		
-		if(type == 4) this.setPlayerInitialPos(new Vector2(xi,yi));
-		else if(type == 3) this.player.setEndPointPos(xi, yi);
+		if(type == 3) this.player.setEndPointPos(xi, yi);
 		if(MeatifyMe.debug) Gdx.app.log("Block", "added " + type);
 		
 	}

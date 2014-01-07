@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnCampanha"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_dlc"
             android:layout_marginTop="15dp"
             android:text="@string/strBtnNiveis" />
 
@@ -23,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/btn_campaign"
             android:text="@string/strBtnCampanha" />
 
         <CheckBox
@@ -35,17 +37,17 @@
             android:text="@string/checkboxTextSound" 
             android:textColor="#000000"/>
 
-        <TextView
-            android:id="@+id/lblMainmenuDescription"
+        <ImageView
+            android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/btnCampanha"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
-            android:text="@string/lblMainMenuDescription"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
+            android:layout_marginBottom="14dp"
+            android:scaleType="center"
+            android:src="@drawable/banner" />
 
     </RelativeLayout>
 

@@ -68,6 +68,9 @@ public class Helper {
 					
 					if(tipo != 4)
 					curLevel.addBlock(posx, posy, tipo);
+					else{
+						curLevel.setPlayerInitialPos(new Vector2(posx,posy));
+					}
 				}
 			
 				
