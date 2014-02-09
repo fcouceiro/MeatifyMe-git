@@ -37,8 +37,8 @@ public final class R {
 		public static final int file_dialog_main = 0x7f030001;
 	}
 	public static final class drawable {
-		public static final int folder = 0x7f020010;
-		public static final int icon = 0x7f020012;
-		public static final int file = 0x7f02000f;
+		public static final int folder = 0x7f020017;
+		public static final int icon = 0x7f020019;
+		public static final int file = 0x7f020016;
 	}
 }
